@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EventFlow.MongoDB" Version="0.77.4077" />
+		<PackageReference Include="NUnit" Version="3.12.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\GameOfBoards.Domain\GameOfBoards.Domain.csproj" />
+	  <ProjectReference Include="..\GameOfBoards.Infrastructure\GameOfBoards.Infrastructure.csproj" />
+	</ItemGroup>
+</Project>

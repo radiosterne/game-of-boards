@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+		<LangVersion>latest</LangVersion>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DeviceDetector.NET" Version="4.1.0" />
+		<PackageReference Include="EventFlow" Version="0.77.4077" />
+		<PackageReference Include="EventFlow.AspNetCore" Version="0.77.4077" />
+		<PackageReference Include="EventFlow.DependencyInjection" Version="0.77.4077" />
+		<PackageReference Include="EventFlow.Hangfire" Version="0.77.4077" />
+		<PackageReference Include="EventFlow.MongoDB" Version="0.77.4077" />
+		<PackageReference Include="Functional.Maybe" Version="2.0.18" />
+		<PackageReference Include="Hangfire" Version="1.7.9" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.9" />
+		<PackageReference Include="Hangfire.Mongo" Version="0.6.6" />
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.3.2" />
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.linux-x64" Version="3.3.2" />
+		<PackageReference Include="JavaScriptEngineSwitcher.Core" Version="3.3.0" />
+		<PackageReference Include="JavaScriptEngineSwitcher.Extensions.MsDependencyInjection" Version="3.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.1.2" />
+		<PackageReference Include="morelinq" Version="3.3.2" />
+		<PackageReference Include="React.AspNet" Version="5.1.2" />
+		<PackageReference Include="Reinforced.Typings" Version="1.5.7" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(OnlyLinuxReferences)' == ''">
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.osx-x64" Version="3.3.2" />
+		<PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.win-x64" Version="3.3.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Client\bundles\**\*">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Remove="Client\node_modules\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Compile Remove="Client\node_modules\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <EmbeddedResource Remove="Client\node_modules\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <None Remove="Client\node_modules\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\GameOfBoards.Domain\GameOfBoards.Domain.csproj" />
+	  <ProjectReference Include="..\GameOfBoards.Infrastructure\GameOfBoards.Infrastructure.csproj" />
+	</ItemGroup>
+
+</Project>
