@@ -29,13 +29,13 @@ export class Store {
 			const { name, phoneNumber } = context.scheme;
 			const model = context.model;
 			if (name.hasBeenUpdated) {
-				const { firstName, middleName, lastName } = name.scheme;
+				const { firstName } = name.scheme;
 				this.userService
 					.updateName({
 						id: model.id,
 						firstName: firstName.modelValue,
-						middleName: middleName.modelValue,
-						lastName: lastName.modelValue
+						middleName: null,
+						lastName: null
 					})
 					.then(name => this.users
 						.filter(u => u.id === model.id)
