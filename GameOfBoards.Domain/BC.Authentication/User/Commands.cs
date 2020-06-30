@@ -83,12 +83,23 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 		
 		public string Password { get; }
 	}
+
+	public class UpdateUserTeamStatus: Command<User, UserId, ExecutionResult<UserId>>
+	{
+		public bool IsTeam { get; }
+
+		public UpdateUserTeamStatus(UserId aggregateId, bool isTeam): base(aggregateId)
+		{
+			IsTeam = isTeam;
+		}
+	}
 	
 	[UsedImplicitly]
 	public class UserCommandHandler:
 		ICommandHandler<User, UserId, ExecutionResult<UserId>, CreateUserCommand>,
 		ICommandHandler<User, UserId, ExecutionResult<PersonName>, UpdateUserNameCommand>,
-		ICommandHandler<User, UserId, ExecutionResult<PhoneNumber>, ChangePhoneCommand>
+		ICommandHandler<User, UserId, ExecutionResult<PhoneNumber>, ChangePhoneCommand>,
+		ICommandHandler<User, UserId, ExecutionResult<UserId>, UpdateUserTeamStatus>
 	{
 		private readonly IBusinessCallContextProvider _contextProvider;
 
@@ -112,5 +123,8 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 			ChangePhoneCommand command,
 			CancellationToken cancellationToken)
 			=> Task.FromResult(aggregate.ChangePhone(command, _contextProvider.GetCurrent()));
+
+		public Task<ExecutionResult<UserId>> ExecuteCommandAsync(User aggregate, UpdateUserTeamStatus command, CancellationToken cancellationToken)
+			=> Task.FromResult(aggregate.UpdateTeamStatus(command, _contextProvider.GetCurrent()));
 	}
 }

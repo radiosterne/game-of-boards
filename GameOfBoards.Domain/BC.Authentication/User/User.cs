@@ -8,8 +8,9 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 	public class User: AggregateRoot<User, UserId>,
 		IEmit<UserNameUpdated>,
 		IEmit<UserPasswordUpdated>,
-		IEmit<UserPhoneUpdated>
-		{
+		IEmit<UserPhoneUpdated>,
+		IEmit<UserTeamStatusUpdated>
+	{
 		public User(UserId id)
 			: base(id)
 		{
@@ -57,6 +58,13 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 					})
 					.ToResult();
 
+		public ExecutionResult<UserId> UpdateTeamStatus(UpdateUserTeamStatus command, BusinessCallContext context)
+		{
+			Emit(new UserTeamStatusUpdated(command.IsTeam, context));
+			
+			return ExecutionResult<UserId>.Success(Id);
+		}
+
 		public void Apply(UserNameUpdated aggregateEvent)
 		{
 		}
@@ -66,6 +74,10 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 		}
 
 		public void Apply(UserPhoneUpdated aggregateEvent)
+		{
+		}
+
+		public void Apply(UserTeamStatusUpdated aggregateEvent)
 		{
 		}
 	}

@@ -37,4 +37,14 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 		
 		public Salt Salt { get; }
 	}
+
+	public class UserTeamStatusUpdated: BusinessAggregateEvent<User, UserId>
+	{
+		public bool IsTeam { get; }
+
+		public UserTeamStatusUpdated(bool isTeam, BusinessCallContext context): base(context)
+		{
+			IsTeam = isTeam;
+		}
+	}
 }

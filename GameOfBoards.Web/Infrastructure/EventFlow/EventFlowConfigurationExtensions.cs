@@ -1,3 +1,5 @@
+
+using GameOfBoards.Domain.BC.Game;
 using EventFlow.AspNetCore.Extensions;
 using EventFlow.Configuration;
 using EventFlow.DependencyInjection.Extensions;

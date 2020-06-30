@@ -1,4 +1,6 @@
-﻿using System.IO;
+
+using GameOfBoards.Domain.BC.Game;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.MongoDB.EventStore;

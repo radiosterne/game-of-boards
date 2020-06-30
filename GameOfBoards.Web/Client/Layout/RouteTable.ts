@@ -3,6 +3,7 @@ import {
 	AccountController,
 	HowtoController,
 	UsersController
+	GamesController,
 } from '@Shared/Contracts';
 import { Route } from '@Shared/LocationDescriptor';
 import { action, computed, observable } from 'mobx';
