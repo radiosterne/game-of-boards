@@ -10,8 +10,21 @@ export class Store {
 	constructor(props: IGamesFormAppSettings) {
 		this.game = props.game;
 		this.answer = '';
-		setInterval(() => new GameApiControllerProxy(new HttpService()).getThin({ id: this.game.id }).then(CommonStore.instance.handleError).then(v => this.game = v), 3000);
+		this.interval = setInterval(() =>
+			new GameApiControllerProxy(new HttpService(true))
+				.getThin({ id: this.game.id })
+				.then(CommonStore.instance.handleError)
+				.then(v => this.game = v),
+		3000);
 	}
+
+	private interval: any;
+
+	public unsubscribe = () => {
+		if (this.interval) {
+			clearInterval(this.interval);
+		}
+	};
 
 	@observable
 	public game: IGameThinView;

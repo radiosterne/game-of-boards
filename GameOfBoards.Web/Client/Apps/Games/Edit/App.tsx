@@ -1,7 +1,6 @@
-import { Box, Button, Container, Drawer, Grid, IconButton, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Container, Drawer, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
-import ListIcon from '@material-ui/icons/List';
 import { GameState, IGamesEditAppSettings } from '@Shared/Contracts';
 import { TableEditor } from '@Shared/Editor';
 import { observer } from 'mobx-react';
@@ -66,9 +65,15 @@ export class App extends React.Component<IGamesEditAppSettings> {
 								title: '',
 								render: question =>
 									<>
-										<IconButton onClick={() => store.openedQuestionId = question.questionId}><ListIcon /></IconButton>
-
-										<Button variant='outlined' onClick={() => store.updateActiveQuestion(question.questionId, !question.isActive)}>
+										<Button
+											variant='outlined'
+											onClick={() => store.openedQuestionId = question.questionId}>
+											Ответы
+										</Button>
+										<Button
+											variant='outlined'
+											onClick={() => store.updateActiveQuestion(question.questionId, !question.isActive)}
+											style={{ marginLeft: '8px' }}>
 											{question.isActive ? 'Закрыть приём' : 'Начать приём'}
 										</Button>
 									</>
@@ -122,8 +127,8 @@ const TeamsDrawer = observer(({ store }: { store: Store }) =>
 
 const QuestionDrawer = observer(({ store }: { store: Store }) =>
 	<Drawer open={!!store.openedQuestion} onClose={() => store.openedQuestionId = null} anchor='right'>
-		<Box p={1}>
-			<Typography variant='h6'>Вопрос «{store.openedQuestion?.shortName}»</Typography>
+		<Box p={2}>
+			<Typography variant='h6'>Вопрос {store.openedQuestion?.shortName}</Typography>
 			<Table size='small'>
 				<TableHead>
 					<TableRow>

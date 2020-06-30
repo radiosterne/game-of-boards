@@ -32,17 +32,40 @@ export class App extends React.Component<IGamesListAppSettings> {
 							onSubmit={this.store.onSubmit}
 							customCell={{
 								title: 'Ссылки',
-								render: game =>
-								{
+								render: game => {
 									const isTeamUser = this.store.isTeamUser;
 									return <>
-										{!isTeamUser && <IconButton onClick={() => Router().go(GamesController.edit(game.id))}><AssignmentIcon /></IconButton>}
-										{!isTeamUser && <IconButton onClick={() => Router().go(GamesController.leaderboard(game.id))}><CalendarTodayIcon /></IconButton>}
-										{isTeamUser && <Button variant='outlined' color='primary' onClick={() => Router().go(GamesController.form(game.id))}>Форма ответов</Button>}
+										{!isTeamUser && <IconButton
+											href={GamesController.edit(game.id).getUrl(false)}
+											onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
+												if (!event.ctrlKey) {
+													event.preventDefault();
+													Router().go(GamesController.edit(game.id));
+												}
+											}}>
+											<AssignmentIcon />
+										</IconButton>}
+										{!isTeamUser && <IconButton
+											href={GamesController.leaderboard(game.id).getUrl(false)}
+											onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
+												if (!event.ctrlKey) {
+													event.preventDefault();
+													Router().go(GamesController.leaderboard(game.id));
+												}
+											}}>
+											<CalendarTodayIcon />
+										</IconButton>}
+										{isTeamUser &&
+											<Button
+												variant='outlined'
+												color='primary'
+												onClick={() => Router().go(GamesController.form(game.id))}>
+												Форма ответов
+											</Button>}
 									</>;
 								}
 							}}
-							canCreate />
+							canCreate={!this.store.isTeamUser} />
 					</PaperWithMargin>
 				</Grid>
 			</Grid>

@@ -18,6 +18,8 @@ namespace GameOfBoards.Domain.BC.Game.Game
 		public IReadOnlyCollection<UserId> RegisteredTeams { get; }
 		
 		public IReadOnlyCollection<QuestionThinView> Questions { get; }
+		
+		public Maybe<string> TeamName { get; }
 
 		public GameThinView(
 			GameId id,
@@ -26,7 +28,8 @@ namespace GameOfBoards.Domain.BC.Game.Game
 			string name,
 			IReadOnlyCollection<QuestionId> answeredQuestions,
 			IReadOnlyCollection<UserId> registeredTeams,
-			IReadOnlyCollection<QuestionThinView> questions)
+			IReadOnlyCollection<QuestionThinView> questions,
+			Maybe<string> teamName)
 		{
 			Id = id;
 			State = state;
@@ -35,9 +38,10 @@ namespace GameOfBoards.Domain.BC.Game.Game
 			AnsweredQuestions = answeredQuestions;
 			RegisteredTeams = registeredTeams;
 			Questions = questions;
+			TeamName = teamName;
 		}
 		
-		public static GameThinView FromView(GameView view, Maybe<UserId> forTeam) =>
+		public static GameThinView FromView(GameView view, Maybe<UserId> forTeam, Maybe<string> teamName) =>
 			new GameThinView(
 				GameId.With(view.Id),
 				view.State,
@@ -47,7 +51,8 @@ namespace GameOfBoards.Domain.BC.Game.Game
 					.Select(id => view.Answers.Where(a => a.TeamId == id).Select(a => a.QuestionId).ToArray())
 					.OrElse(Array.Empty<QuestionId>()),
 				view.RegisteredTeams,
-				view.Questions.Select(q => new QuestionThinView(q.QuestionId, q.ShortName)).ToArray());
+				view.Questions.Select(q => new QuestionThinView(q.QuestionId, q.ShortName)).ToArray(),
+				teamName);
 	}
 
 	public class QuestionThinView

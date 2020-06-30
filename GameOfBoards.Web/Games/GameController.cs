@@ -29,7 +29,7 @@ namespace GameOfBoards.Web.Games
 			var teamId = userView.Where(u => u.IsTeam).Select(u => UserId.With(u.Id));
 			var games = await QueryProcessor.ProcessAsync(new ListGameQuery(), CancellationToken.None);
 
-			return await React(new GamesListAppSettings(games.Select(g => GameThinView.FromView(g, teamId)).ToArray()));
+			return await React(new GamesListAppSettings(games.Select(g => GameThinView.FromView(g, teamId, userView.Where(u => u.IsTeam).Select(u => u.Name.FullForm))).ToArray()));
 		});
 		
 		public Task<TypedResult<GamesEditAppSettings>> Edit(string id) => Authenticated(async () =>
@@ -81,7 +81,11 @@ namespace GameOfBoards.Web.Games
 			
 			var game = await QueryProcessor.ProcessAsync(new GameByIdQuery(GameId.With(id)), CancellationToken.None);
 
-			return await React(new GamesFormAppSettings(GameThinView.FromView(game.Value, userView.Select(u => UserId.With(u.Id)))));
+			return await React(new GamesFormAppSettings(
+				GameThinView.FromView(
+					game.Value,
+					userView.Select(u => UserId.With(u.Id)),
+					userView.Where(u => u.IsTeam).Select(u => u.Name.FullForm))));
 		});
 	}
 }

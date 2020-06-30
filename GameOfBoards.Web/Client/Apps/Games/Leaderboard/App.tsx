@@ -23,20 +23,31 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 			<Grid container>
 				<Grid item xs={12}>
 					<Box mb={2}>
-						<PaperWithMargin>
+						<PaperWithMargin style={{ overflowX: 'scroll' }}>
 							<Typography variant='h6'>Сводка</Typography>
-							<Table>
+							<Table size='small' style={{ maxWidth: '100%', overflowX: 'scroll', minWidth: '800px' }}>
 								<TableHead>
-									<TableCell />
+									<TableCell><b>Вопрос</b></TableCell>
 									{store.leaderboard.map(l => <TableCell key={l.name}><b>{l.name}</b></TableCell>)}
 								</TableHead>
 								<TableBody>
-									{store.questionNames.map((qn, idx) => <TableRow key={qn}>
-										<TableCell>{qn}</TableCell>
+									{store.questionNames.map(qn => <TableRow key={qn.id}>
+										<TableCell>{qn.name}</TableCell>
 										{store.leaderboard.map(l => {
-											const answer = l.answers[idx];
-											const correct = answer ? (answer.autoCorrect || answer.markedCorrect) : false;
-											return <TableCell key={l.name}>{correct ? 'Верно' : 'Неверно'}</TableCell>;
+											const answer = l.answers.find(a => a.questionId === qn.id);
+											const state = answer
+												? (answer.autoCorrect || answer.markedCorrect)
+													? 'Верно'
+													: 'Неверно'
+												: 'Нет ответа';
+											const color = answer
+												? (answer.autoCorrect || answer.markedCorrect)
+													? '#94ac24'
+													: '#000'
+												: '#808080';
+
+											const shouldBeBold = answer && (answer.autoCorrect || answer.markedCorrect);
+											return <TableCell style={{ color: color, fontWeight: shouldBeBold ? 'bold' : 'normal' }} key={l.name}>{state}</TableCell>;
 										})}
 									</TableRow>)}
 									<TableRow>
@@ -49,7 +60,7 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 					</Box>
 					<PaperWithMargin>
 						<Typography variant='h6'>Первые правильные ответы на вопросы</Typography>
-						<Table>
+						<Table size='small'>
 							<TableHead>
 								<TableCell>
 									Вопрос
@@ -59,12 +70,16 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 								</TableCell>
 							</TableHead>
 							<TableBody>
-								{store.questionNames.map((qn, idx) => <TableRow key={qn}>
-									<TableCell>{qn}</TableCell>
-									<TableCell>{store.leaderboard
-										.map(l => l.answers[idx])
-										.filter(l => !!l && (l.autoCorrect || l.markedCorrect))
-										.sort((l, r) => l.moment.valueOf() - r.moment.valueOf())[0]?.teamName || ''}</TableCell>
+								{store.questionNames.map(qn => <TableRow key={qn.id}>
+									<TableCell>{qn.name}</TableCell>
+									<TableCell>
+										<b>
+											{store.leaderboard
+												.map(l => l.answers.find(a => a.questionId === qn.id))
+												.filter(l => !!l && (l.autoCorrect || l.markedCorrect))
+												.sort((l, r) => l.moment.valueOf() - r.moment.valueOf())[0]?.teamName || ''}
+										</b>
+									</TableCell>
 								</TableRow>)}
 							</TableBody>
 						</Table>
@@ -73,6 +88,10 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 			</Grid>
 		</Box>;
 	}
+
+	componentWillUnmount = () => {
+		this.store.unsubscribe();
+	};
 }
 
 const PaperWithMargin = styled(Paper)`

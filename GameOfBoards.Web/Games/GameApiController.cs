@@ -37,7 +37,7 @@ namespace GameOfBoards.Web.Games
 			var userView = await ControllerContext.HttpContext.FindUserId()
 				.SelectAsync(userId => QueryProcessor.GetByIdAsync<UserView, UserId>(userId));
 			var teamId = userView.Where(u => u.IsTeam).Select(u => UserId.With(u.Id));
-			return GameThinView.FromView(mg.Value, teamId).AsSuccess();
+			return GameThinView.FromView(mg.Value, teamId, userView.Where(u => u.IsTeam).Select(u => u.Name.FullForm)).AsSuccess();
 		}
 
 		public Task<ActionResult<ExecutionResult<GameView>>> UpdateTeamAnswerStatus(UpdateTeamAnswerStatus cmd) =>
@@ -58,7 +58,7 @@ namespace GameOfBoards.Web.Games
 					var userView = await ControllerContext.HttpContext.FindUserId()
 						.SelectAsync(userId => QueryProcessor.GetByIdAsync<UserView, UserId>(userId));
 					var teamId = userView.Where(u => u.IsTeam).Select(u => UserId.With(u.Id));
-					return GameThinView.FromView(game, teamId);
+					return GameThinView.FromView(game, teamId, userView.Where(u => u.IsTeam).Select(u => u.Name.FullForm));
 				})
 				.AsActionResult();
 
@@ -104,7 +104,7 @@ namespace GameOfBoards.Web.Games
 					var userView = await ControllerContext.HttpContext.FindUserId()
 						.SelectAsync(userId => QueryProcessor.GetByIdAsync<UserView, UserId>(userId));
 					var teamId = userView.Where(u => u.IsTeam).Select(u => UserId.With(u.Id));
-					return GameThinView.FromView(game, teamId);
+					return GameThinView.FromView(game, teamId, userView.Where(u => u.IsTeam).Select(u => u.Name.FullForm));
 				})
 				.AsActionResult();
 		

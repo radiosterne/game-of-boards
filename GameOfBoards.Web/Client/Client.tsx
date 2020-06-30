@@ -12,7 +12,7 @@ import styled, { ThemeProvider } from 'styled-components';
 
 import { AppNames } from './AppNames';
 import { Apps } from './Apps';
-import { FullScreenLoader, Header, Sidebar } from './Layout';
+import { Footer, FullScreenLoader, Header, Sidebar } from './Layout';
 import { CommonStore } from './Layout/CommonStore';
 import { RouteTable } from './Layout/RouteTable';
 import { createMaterialUITheme } from './Shared/createMaterialUITheme';
@@ -80,6 +80,7 @@ export class Client extends React.Component<ClientProps> {
 									loggingService={this.loggingService}
 									routeTable={this.routeTable} />
 							</MainField>}
+						<Footer />
 					</div>
 				</ThemeProvider>
 			</StylesProvider>

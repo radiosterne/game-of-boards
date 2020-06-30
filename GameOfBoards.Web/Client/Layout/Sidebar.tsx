@@ -1,4 +1,4 @@
-import { Collapse, Divider, Drawer, Hidden, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Collapse, Divider, Drawer, Hidden, List, ListItem, ListItemText } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { Router } from '@Shared/Router';
 import { observer } from 'mobx-react';
@@ -44,7 +44,7 @@ const SidebarContent = observer((props: Props) => {
 	return (
 		<div>
 			<Header>
-				<ProjectName variant='h6'>GameOfBoards</ProjectName>
+				<img src='/IDA_LOGO-06.png' style={{ maxHeight: '64px', padding: '5px', objectFit: 'contain' }} />
 			</Header>
 			<Divider />
 			<List>
@@ -90,11 +90,6 @@ const Header = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
-
-const ProjectName = styled(Typography)`
-	color: ${props => props.theme.palette.secondary.main};
-	min-height: 64px;
-` as typeof Typography;
 
 const MenuItem = styled.span<{ active: boolean }>`
 	color: ${props => props.active
