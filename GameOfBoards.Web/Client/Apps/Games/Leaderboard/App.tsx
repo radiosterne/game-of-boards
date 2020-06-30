@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { IGamesLeaderboardAppSettings } from '@Shared/Contracts';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -19,7 +19,7 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 
 	render() {
 		const store = this.store;
-		return <PaddedContainer fixed>
+		return <Box p={2}>
 			<Grid container>
 				<Grid item xs={12}>
 					<Box mb={2}>
@@ -71,14 +71,9 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 					</PaperWithMargin>
 				</Grid>
 			</Grid>
-		</PaddedContainer >;
+		</Box>;
 	}
 }
-
-const PaddedContainer = styled(Container)`
-	padding-top: ${props => props.theme.spacing(4)}px;
-	padding-bottom: ${props => props.theme.spacing(4)}px;
-`;
 
 const PaperWithMargin = styled(Paper)`
 	padding: ${props => props.theme.spacing(2)}px;
