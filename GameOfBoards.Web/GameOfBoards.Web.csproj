@@ -38,6 +38,10 @@
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Remove="Client\node_modules\**" />
+		<None Remove="Client\title.jpg" />
+		<Content Include="Client\title.jpg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 

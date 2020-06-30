@@ -20,7 +20,7 @@ export class App extends React.Component<IGamesFormAppSettings> {
 	render() {
 		const store = this.store;
 		return <>
-			<img src='/bundles/title.jpg' style={{ width: '100%', height: '33vh', objectFit: 'cover' }} />
+			<img src='/title.jpg' style={{ width: '100%', height: '33vh', objectFit: 'cover' }} />
 			<PaddedContainer fixed>
 				<Grid container>
 					<Grid item xs={12}>
