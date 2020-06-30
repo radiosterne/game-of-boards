@@ -77,7 +77,7 @@ export class Store {
 					.filter(answer => answer.questionId === q.questionId)
 					.map(answer => ({
 						...answer,
-						teamName: this.teams.find(t => t.id === answer.teamId)!.name,
+						teamName: this.teams.find(t => t.id === answer.teamId)!.name.fullForm,
 						autoCorrect: q.rightAnswers.split(';').map(x => x.toLowerCase()).indexOf(answer.answerText.toLowerCase()) !== -1,
 						markedCorrect: this.game.corrections.find(c => c.questionId === q.questionId && c.teamId === answer.teamId)?.isCorrect || false
 					}))
