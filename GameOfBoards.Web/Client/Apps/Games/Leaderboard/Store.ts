@@ -52,7 +52,7 @@ export class Store {
 			.groupBy(q => q.teamName)
 			.map(group => ({
 				name: group[0].teamName,
-				total: group.filter(g => g.autoCorrect || g.markedCorrect),
+				total: group.filter(g => g.autoCorrect || g.markedCorrect).length,
 				answers: Collections.sortBy(group, g => g.questionIdx)
 			}))
 			.value();

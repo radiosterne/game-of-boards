@@ -41,7 +41,7 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 									</TableRow>)}
 									<TableRow>
 										<TableCell><b>Итого:</b></TableCell>
-										{store.leaderboard.map(l => <TableCell key={l.name}>{l.total}</TableCell>)}
+										{store.leaderboard.map(l => <TableCell key={l.name}><b>{l.total}</b></TableCell>)}
 									</TableRow>
 								</TableBody>
 							</Table>
