@@ -28,7 +28,7 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 							<Table>
 								<TableHead>
 									<TableCell />
-									{store.leaderboard.map(l => <TableCell key={l.name.fullForm}><b>{l.name.fullForm}</b></TableCell>)}
+									{store.leaderboard.map(l => <TableCell key={l.name}><b>{l.name}</b></TableCell>)}
 								</TableHead>
 								<TableBody>
 									{store.questionNames.map((qn, idx) => <TableRow key={qn}>
@@ -36,12 +36,12 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 										{store.leaderboard.map(l => {
 											const answer = l.answers[idx];
 											const correct = answer ? (answer.autoCorrect || answer.markedCorrect) : false;
-											return <TableCell key={l.name.fullForm}>{correct ? 'Верно' : 'Неверно'}</TableCell>;
+											return <TableCell key={l.name}>{correct ? 'Верно' : 'Неверно'}</TableCell>;
 										})}
 									</TableRow>)}
 									<TableRow>
 										<TableCell><b>Итого:</b></TableCell>
-										{store.leaderboard.map(l => <TableCell key={l.name.fullForm}>{l.total}</TableCell>)}
+										{store.leaderboard.map(l => <TableCell key={l.name}>{l.total}</TableCell>)}
 									</TableRow>
 								</TableBody>
 							</Table>
