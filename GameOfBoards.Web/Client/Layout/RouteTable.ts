@@ -62,7 +62,7 @@ export class RouteTable {
 					.route('Список игр', true)
 					.withoutLayout(isTeam),
 				GamesController.leaderboard('')
-					.route('Результаты', !isTeam)
+					.route('Результаты', true)
 			),
 			new RouteGroup(
 				'Пользователи',
