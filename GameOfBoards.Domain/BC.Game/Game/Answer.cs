@@ -1,3 +1,4 @@
+using System;
 using GameOfBoards.Domain.BC.Authentication.User;
 
 namespace GameOfBoards.Domain.BC.Game.Game
@@ -7,12 +8,15 @@ namespace GameOfBoards.Domain.BC.Game.Game
 		public QuestionId QuestionId { get; }
 		public UserId TeamId { get; }
 		public string AnswerText { get; }
+		
+		public DateTime Moment { get; }
 
-		public Answer(QuestionId questionId, UserId teamId, string answer)
+		public Answer(QuestionId questionId, UserId teamId, string answerText, DateTime moment)
 		{
 			QuestionId = questionId;
 			TeamId = teamId;
-			AnswerText = answer;
+			AnswerText = answerText;
+			Moment = moment;
 		}
 	}
 }

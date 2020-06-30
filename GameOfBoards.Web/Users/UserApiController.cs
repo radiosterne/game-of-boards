@@ -17,14 +17,22 @@ namespace GameOfBoards.Web.Users
 			var result = await CommandBus.PublishAsync(cmd, CancellationToken.None);
 			return result.Result.Value;
 		}
-		
+
 		public async Task<ActionResult<PhoneNumber>> ChangePhone(ChangePhoneCommand cmd)
 		{
 			var result = await CommandBus.PublishAsync(cmd, CancellationToken.None);
 			return result.Result.Value;
 		}
-		
+
 		public async Task<ActionResult<UserView>> Create(CreateUserCommand cmd)
+		{
+			var result = await CommandBus.PublishAsync(cmd, CancellationToken.None);
+			var view = await QueryProcessor.ProcessAsync(new UserViewByIdQuery(result.Result.Value),
+				CancellationToken.None);
+			return view.Value;
+		}
+
+		public async Task<ActionResult<UserView>> UpdateTeamStatus(UpdateUserTeamStatus cmd)
 		{
 			var result = await CommandBus.PublishAsync(cmd, CancellationToken.None);
 			var view = await QueryProcessor.ProcessAsync(new UserViewByIdQuery(result.Result.Value),

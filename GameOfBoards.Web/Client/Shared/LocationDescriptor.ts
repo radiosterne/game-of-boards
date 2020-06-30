@@ -72,8 +72,8 @@ export class Route<T extends AppNames> {
 		return this;
 	}
 
-	public withoutLayout() {
-		this.noLayout = true;
+	public withoutLayout(noLayout: boolean) {
+		this.noLayout = noLayout;
 		return this;
 	}
 

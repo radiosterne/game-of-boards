@@ -1,5 +1,7 @@
 export type AppNames =
 	'AccountLoginApp' |
+	'GamesEditApp' |
+	'GamesFormApp' |
+	'GamesLeaderboardApp' |
 	'GamesListApp' |
-	'HowtoMainApp' |
 	'UsersListApp';

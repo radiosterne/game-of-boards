@@ -1,6 +1,6 @@
 import { CommonStore } from '@Layout';
 import { Collections } from '@Shared/Collections';
-import { GameApiControllerProxy, IGameView, IGamesListAppSettings } from '@Shared/Contracts';
+import { GameApiControllerProxy, GameState, IGameThinView, IGamesListAppSettings } from '@Shared/Contracts';
 import { HttpService } from '@Shared/HttpService';
 import { SchemeBuilder } from '@Shared/Validation/SchemeBuilder';
 import { EmptyObject } from '@Shared/Validation/Types';
@@ -15,11 +15,26 @@ export class Store {
 	}
 
 	@observable
-	private myGames: IGameView[];
+	private myGames: IGameThinView[];
 
 	@computed
 	public get sortedGames() {
-		return Collections.orderBy(this.myGames, x => x.name);
+		return Collections.chain(this.myGames)
+			.sortBy(x => x.name)
+			.filter(x => !this.isTeamUser || (x.registeredTeams.indexOf(this.userId) !== -1 && (x.state === GameState.Open || x.state === GameState.Finished)))
+			.value();
+	}
+
+	@computed
+	public get isTeamUser() {
+		const user = CommonStore.instance.user;
+		return !!user && user.isTeam;
+	}
+
+	@computed
+	public get userId() {
+		const user = CommonStore.instance.user;
+		return user ? user.id : '';
 	}
 
 	public onSubmit = (context: ContextFor<Store['scheme']>) => {
@@ -46,10 +61,15 @@ export class Store {
 		}
 	};
 
-	private refresh = (i: IGameView) => this.myGames =
-		this.myGames.filter(x => x.id !== i.id)
+	private refresh = (i: IGameThinView) => this.myGames =
+		this.myGames
+			.filter(x => x.id !== i.id)
 			.concat([i]);
 
-	public scheme = SchemeBuilder.for<IGameView>()
-		.string('name', 'Имя', p => p.notNullOrEmpty());
+	public scheme = SchemeBuilder.for<IGameThinView>()
+		.string('name', 'Имя', p => p.notNullOrEmpty())
+		.canEditWhen(() => {
+			const user = CommonStore.instance.user;
+			return !!user && !user.isTeam;
+		});
 }

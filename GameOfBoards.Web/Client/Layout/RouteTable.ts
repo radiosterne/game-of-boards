@@ -53,25 +53,34 @@ export class RouteTable {
 	@computed
 	public get routes() {
 		const user = CommonStore.instance.user;
+		const isTeam = !!user && user.isTeam;
 		const result = new Routes(
 			new RouteGroup(
 				'Основная',
 				true,
 				GamesController.list()
 					.route('Список игр', true)
+					.withoutLayout(isTeam),
+				GamesController.leaderboard('')
+					.route('Результаты', !isTeam)
 			),
 			new RouteGroup(
 				'Пользователи',
 				true,
 				UsersController.list()
-					.route('Список', !!user && !user.isTeam)
+					.route('Список', !isTeam)
 			),
 			new RouteGroup(
 				'Скрыто',
 				true,
 				AccountController.login()
 					.route('Форма входа', false)
-					.withoutLayout()
+					.withoutLayout(true),
+				GamesController.edit('')
+					.route('Игра', false),
+				GamesController.form('')
+					.route('Игра', false)
+					.withoutLayout(true)
 			)
 		);
 

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using GameOfBoards.Web.Games;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MoreLinq.Extensions;
-using GameOfBoards.Web.Howto;
 
 namespace GameOfBoards.Web.Infrastructure
 {
@@ -21,8 +21,8 @@ namespace GameOfBoards.Web.Infrastructure
 		private static readonly RouteTable CustomRoutes = new RouteTable(new[]
 		{
 			new CustomRouteDescriptor(
-				typeof(HowtoController),
-				nameof(HowtoController.Main),
+				typeof(GamesController),
+				nameof(GamesController.List),
 				"/"), 
 		});
 

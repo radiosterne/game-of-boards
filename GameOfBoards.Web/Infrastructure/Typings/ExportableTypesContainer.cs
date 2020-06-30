@@ -341,7 +341,8 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 			typeof(ActionResult<>),
 			typeof(Maybe<>),
 			typeof(Task<>),
-			typeof(Nullable<>)
+			typeof(Nullable<>),
+			typeof(List<>),
 		};
 
 		private static readonly Type[] TypesToSkip =
@@ -350,8 +351,7 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 			typeof(ActionResult),
 			typeof(FileContentResult),
 			typeof(AggregateEvent<,>),
-			typeof(BusinessAggregateEvent<,>),
-			typeof(List<>),
+			typeof(BusinessAggregateEvent<,>)
 		};
 
 		private static readonly RtTypeName StringType = new RtSimpleTypeName("string");

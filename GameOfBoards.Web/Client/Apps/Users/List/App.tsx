@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Button, Container, Grid, Paper } from '@material-ui/core';
 import { IUsersListAppSettings } from '@Shared/Contracts';
 import { TableEditor } from '@Shared/Editor';
 import { observer } from 'mobx-react';
@@ -27,6 +27,22 @@ export class App extends React.Component<IUsersListAppSettings> {
 							entities={this.store.sortedUsers}
 							scheme={this.store.scheme}
 							onSubmit={this.store.onSubmit}
+							customCell={{
+								title: '',
+								render: user =>
+									<>
+										<Button variant='outlined' onClick={() => this.store.changeTeamStatus(user.id, !user.isTeam)}>
+											{user.isTeam ? 'Не команда' : 'Сделать командой'}
+										</Button>
+										{user.isTeam && <Button
+											style={{ marginLeft: '8px' }}
+											variant='outlined'
+											onClick={() => {
+												const url = `https://gameofboards.blumenkraft.me/account/shortLogin?id=${user.id}&salt=${encodeURIComponent(user.salt || '')}`;
+												navigator.clipboard.writeText(url);
+											}}>Ссылка на вход</Button>}
+									</>
+							}}
 							canCreate />
 					</PaperWithMargin>
 				</Grid>

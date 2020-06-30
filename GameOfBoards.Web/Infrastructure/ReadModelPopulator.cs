@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EventFlow.Configuration;
 using EventFlow.ReadStores;
+using GameOfBoards.Domain.BC.Game.Game;
 using JetBrains.Annotations;
 
 namespace GameOfBoards.Web.Infrastructure
@@ -18,6 +19,7 @@ namespace GameOfBoards.Web.Infrastructure
 
 		public async Task BootAsync(CancellationToken ct)
 		{
+			await Rebuild<GameView>(ct);
 		}
 		
 		private async Task Rebuild<T>(CancellationToken ct)

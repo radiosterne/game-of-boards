@@ -71,7 +71,7 @@ namespace GameOfBoards.Domain.BC.Game.Game
 			SetId(domainEvent);
 			var e = domainEvent.AggregateEvent;
 			Answers.RemoveAll(a => a.TeamId == e.TeamId && a.QuestionId == e.QuestionId);
-			Answers.Add(new Answer(e.QuestionId, e.TeamId, e.Answer));
+			Answers.Add(new Answer(e.QuestionId, e.TeamId, e.Answer, domainEvent.AggregateEvent.Context.When));
 		}
 
 		public List<AnswerCorrection> Corrections { get; private set; } = new List<AnswerCorrection>();

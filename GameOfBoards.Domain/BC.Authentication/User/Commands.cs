@@ -87,9 +87,12 @@ namespace GameOfBoards.Domain.BC.Authentication.User
 	public class UpdateUserTeamStatus: Command<User, UserId, ExecutionResult<UserId>>
 	{
 		public bool IsTeam { get; }
+		
+		public UserId Id { get; }
 
-		public UpdateUserTeamStatus(UserId aggregateId, bool isTeam): base(aggregateId)
+		public UpdateUserTeamStatus(UserId id, bool isTeam): base(id)
 		{
+			Id = id;
 			IsTeam = isTeam;
 		}
 	}

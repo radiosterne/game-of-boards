@@ -77,4 +77,11 @@ export class Store {
 				.maybeString('middleName', 'Отчество', p => p.notWhitespace().default(null))
 				.maybeString('lastName', 'Фамилия', p => p.notWhitespace().default(null)))
 		.string('phoneNumber', 'Телефонный номер', p => p.formatAsPhone());
+
+	public changeTeamStatus = (userId: string, status: boolean) => {
+		this.userService.updateTeamStatus({ id: userId, isTeam: status })
+			.then(() => this.users
+				.filter(u => u.id === userId)
+				.forEach(u => u.isTeam = status));
+	};
 }
