@@ -61,10 +61,10 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 							<TableBody>
 								{store.questionNames.map((qn, idx) => <TableRow key={qn}>
 									<TableCell>{qn}</TableCell>
-									{store.leaderboard
+									<TableCell>{store.leaderboard
 										.map(l => l.answers[idx])
 										.filter(l => !!l)
-										.sort((l, r) => l.moment.valueOf() - r.moment.valueOf())[0]?.teamName || ''}
+										.sort((l, r) => l.moment.valueOf() - r.moment.valueOf())[0]?.teamName || ''}</TableCell>
 								</TableRow>)}
 							</TableBody>
 						</Table>
