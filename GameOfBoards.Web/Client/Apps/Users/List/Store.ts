@@ -54,13 +54,13 @@ export class Store {
 			}
 		} else {
 			const { name, phoneNumber } = context.scheme;
-			const { firstName, middleName, lastName } = name.scheme;
+			const { firstName } = name.scheme;
 
 			this.userService
 				.create({
 					firstName: firstName.modelValue,
-					middleName: middleName.modelValue,
-					lastName: lastName.modelValue,
+					middleName: null,
+					lastName: null,
 					phoneNumber: phoneNumber.modelValue,
 					password: null
 				})
@@ -73,9 +73,7 @@ export class Store {
 			'name',
 			'Имя пользователя',
 			innerScheme => innerScheme
-				.string('firstName', 'Имя', p => p.notNullOrEmpty())
-				.maybeString('middleName', 'Отчество', p => p.notWhitespace().default(null))
-				.maybeString('lastName', 'Фамилия', p => p.notWhitespace().default(null)))
+				.string('firstName', 'Имя', p => p.notNullOrEmpty()))
 		.string('phoneNumber', 'Телефонный номер', p => p.formatAsPhone());
 
 	public changeTeamStatus = (userId: string, status: boolean) => {
