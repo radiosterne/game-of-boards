@@ -1,11 +1,11 @@
+import { CommonStore } from '@Layout';
 import { Collections } from '@Shared/Collections';
-import { IGameView, GameApiControllerProxy, IGamesListAppSettings } from '@Shared/Contracts';
+import { GameApiControllerProxy, IGameView, IGamesListAppSettings } from '@Shared/Contracts';
 import { HttpService } from '@Shared/HttpService';
 import { SchemeBuilder } from '@Shared/Validation/SchemeBuilder';
 import { EmptyObject } from '@Shared/Validation/Types';
 import { ContextFor } from '@Shared/Validation/ValidationContext';
 import { computed, observable } from 'mobx';
-import { CommonStore } from '@Layout';
 
 export class Store {
 	private service = new GameApiControllerProxy(new HttpService());
@@ -34,7 +34,7 @@ export class Store {
 					})
 					.then(CommonStore.instance.handleError)
 					.then(this.refresh);
-				}
+			}
 		} else {
 			this.service
 				.update({
@@ -44,7 +44,7 @@ export class Store {
 				.then(CommonStore.instance.handleError)
 				.then(this.refresh);
 		}
-	}
+	};
 
 	private refresh = (i: IGameView) => this.myGames =
 		this.myGames.filter(x => x.id !== i.id)

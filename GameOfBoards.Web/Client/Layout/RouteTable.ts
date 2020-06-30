@@ -1,9 +1,8 @@
 import { Collections } from '@Shared/Collections';
 import {
 	AccountController,
-	HowtoController,
-	UsersController
 	GamesController,
+	UsersController,
 } from '@Shared/Contracts';
 import { Route } from '@Shared/LocationDescriptor';
 import { action, computed, observable } from 'mobx';
@@ -53,18 +52,19 @@ export class RouteTable {
 
 	@computed
 	public get routes() {
+		const user = CommonStore.instance.user;
 		const result = new Routes(
 			new RouteGroup(
 				'Основная',
 				true,
-				HowtoController.main()
-					.route('Пример', true)
+				GamesController.list()
+					.route('Список игр', true)
 			),
 			new RouteGroup(
 				'Пользователи',
 				true,
 				UsersController.list()
-					.route('Список', false)
+					.route('Список', !!user && !user.isTeam)
 			),
 			new RouteGroup(
 				'Скрыто',

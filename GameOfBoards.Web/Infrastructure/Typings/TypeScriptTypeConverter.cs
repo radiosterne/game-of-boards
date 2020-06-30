@@ -37,6 +37,14 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 				(type, typeResolver) =>
 					new RtSimpleTypeName(
 						$"({typeResolver.ResolveTypeName(type.GetGenericArguments().Single())} | null)"));
+			
+			
+
+			builder.SubstituteGeneric(
+				typeof(List<>),
+				(type, typeResolver) =>
+					new RtSimpleTypeName(
+						$"{typeResolver.ResolveTypeName(type.GetGenericArguments().Single())}[]"));
 
 			builder.SubstituteGeneric(
 				TypeHelpers.OpenBusinessAggregateEventType,

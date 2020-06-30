@@ -350,7 +350,8 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 			typeof(ActionResult),
 			typeof(FileContentResult),
 			typeof(AggregateEvent<,>),
-			typeof(BusinessAggregateEvent<,>)
+			typeof(BusinessAggregateEvent<,>),
+			typeof(List<>),
 		};
 
 		private static readonly RtTypeName StringType = new RtSimpleTypeName("string");
