@@ -2,8 +2,9 @@ import { CommonStore } from '@Layout';
 import { GameApiControllerProxy, GameState, IGameView, IGamesEditAppSettings, IUserView } from '@Shared/Contracts';
 import { HttpService } from '@Shared/HttpService';
 import { computed, observable } from 'mobx';
-import { correlateQuestionsAndAnswers, getTeamsRegistrationStatus, QuestionWithAnswers } from '../CommonLogic';
+import { correlateQuestionsAndAnswers, getTeamsRegistrationStatus } from '../CommonLogic';
 import { QuestionEditorStore } from './QuestionEditorStore';
+import { OpenedQuestionStore } from './OpenedQuestionStore';
 
 export class Store {
 	private service = new GameApiControllerProxy(new HttpService());
@@ -12,7 +13,7 @@ export class Store {
 		this.game = props.game;
 		this.teams = props.teams;
 		this.teamDrawerOpen = false;
-		this.openedQuestionId = null;
+		this.openedQuestionStore = null;
 		this.interval = setInterval(() =>
 			new GameApiControllerProxy(new HttpService(true))
 				.get({ id: this.game.id })
@@ -40,18 +41,15 @@ export class Store {
 	public teamDrawerOpen: boolean;
 
 	@observable
-	public openedQuestionId: string | null;
+	public openedQuestionStore: OpenedQuestionStore | null;
 
-	@computed
-	public get openedQuestionStore() {
-		return this.openedQuestionId
-			? new OpenedQuestionStore(
-				this.game.id,
-				this.questions.find(x => x.questionId === this.openedQuestionId)!,
-				this.teamsAndRegistrations.filter(t => t.registered),
-				v => this.game = v)
-			: null;
-	}
+	public openQuestion = (questionId: string) => {
+		this.openedQuestionStore = new OpenedQuestionStore(
+			this,
+			questionId,
+			this.teamsAndRegistrations.filter(t => t.registered),
+			v => this.game = v);
+	};
 
 	@observable
 	public questionEditor: QuestionEditorStore | null;
@@ -114,57 +112,5 @@ export class Store {
 		})
 			.then(CommonStore.instance.handleError)
 			.then(v => this.game = v);
-	};
-}
-
-export class OpenedQuestionStore {
-	private service = new GameApiControllerProxy(new HttpService());
-
-	constructor(
-		private gameId: string,
-		public question: QuestionWithAnswers,
-		public registeredTeams: IUserView[],
-		private onSave: (view: IGameView) => void
-	) {
-		this.answer = '';
-		this.selectedTeamId = '';
-	}
-
-	@observable
-	public answer: string;
-
-	@observable
-	public selectedTeamId: string;
-
-	@computed
-	public get canManuallyAnswer() {
-		return this.teamsWithoutAnswer.length !== 0;
-	}
-
-	@computed
-	public get teamsWithoutAnswer() {
-		return this.registeredTeams.filter(rt => this.question.answers.find(a => a.teamId === rt.id) === undefined);
-	}
-
-	@computed
-	public get savingDisabled() {
-		return this.selectedTeamId !== '' && this.answer.trim() !== '';
-	}
-
-	public saveAnswer = () => {
-		this.service.updateTeamAnswerManually({
-			id: this.gameId,
-			questionId: this.question.questionId,
-			teamId: this.selectedTeamId,
-			answer: this.answer
-		})
-			.then(CommonStore.instance.handleError)
-			.then(this.onSave);
-	};
-
-	public markCorrect = (teamId: string, isCorrect: boolean) => {
-		this.service.updateTeamAnswerStatus({ id: this.gameId, teamId: teamId, questionId: this.question.questionId, isCorrect: isCorrect })
-			.then(CommonStore.instance.handleError)
-			.then(this.onSave);
 	};
 }

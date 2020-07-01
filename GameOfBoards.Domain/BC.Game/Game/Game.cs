@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using EventFlow.Aggregates;
 using Functional.Maybe;
 using GameOfBoards.Domain.BC.Game.Game.Commands;
@@ -20,6 +22,7 @@ namespace GameOfBoards.Domain.BC.Game.Game
 		public Game(GameId id)
 			: base(id)
 		{
+			_answers = new List<Answer>();
 		}
 
 		public ExecutionResult<GameId> Update(UpdateGame cmd, BusinessCallContext ctx)
@@ -50,6 +53,7 @@ namespace GameOfBoards.Domain.BC.Game.Game
 		}
 
 		private GameState _state;
+		private List<Answer> _answers;
 
 		void IEmit<StateUpdated>.Apply(StateUpdated e)
 		{
@@ -99,13 +103,17 @@ namespace GameOfBoards.Domain.BC.Game.Game
 
 		public ExecutionResult<GameId> UpdateTeamAnswer(UpdateTeamAnswer cmd, BusinessCallContext context)
 		{
-			Emit(new TeamAnswerUpdated(cmd.Answer, cmd.TeamId, cmd.QuestionId, context));
+			if (_answers.All(a => a.TeamId != cmd.TeamId || a.QuestionId != cmd.QuestionId))
+			{
+				Emit(new TeamAnswerUpdated(cmd.Answer, cmd.TeamId, cmd.QuestionId, context));
+			}
 
 			return ExecutionResult<GameId>.Success(Id);
 		}
 
 		void IEmit<TeamAnswerUpdated>.Apply(TeamAnswerUpdated e)
 		{
+			_answers.Add(new Answer(e.QuestionId, e.TeamId, e.Answer, e.Context.When));
 		}
 
 		public ExecutionResult<GameId> UpdateTeamAnswerStatus(UpdateTeamAnswerStatus cmd, BusinessCallContext context)

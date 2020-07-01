@@ -98,7 +98,7 @@ export class App extends React.Component<IGamesEditAppSettings> {
 										</TableCell>
 										<TableCell>
 											<IconButton
-												onClick={() => store.openedQuestionId = question.questionId}>
+												onClick={() => store.openQuestion(question.questionId)}>
 												<ViewListIcon color='primary' />
 											</IconButton>
 										</TableCell>
