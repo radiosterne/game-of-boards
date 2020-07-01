@@ -17,7 +17,21 @@ export class Store {
 		this.teams = props.teams;
 		this.teamDrawerOpen = false;
 		this.openedQuestionId = null;
+		this.interval = setInterval(() =>
+			new GameApiControllerProxy(new HttpService(true))
+				.get({ id: this.game.id })
+				.then(CommonStore.instance.handleError)
+				.then(v => this.game = v),
+		3000);
 	}
+
+	private interval: any;
+
+	public unsubscribe = () => {
+		if (this.interval) {
+			clearInterval(this.interval);
+		}
+	};
 
 	@observable
 	public game: IGameView;

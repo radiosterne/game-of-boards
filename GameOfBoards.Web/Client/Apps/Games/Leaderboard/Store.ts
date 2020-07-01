@@ -27,7 +27,7 @@ export class Store {
 				.get({ id: this.game.id })
 				.then(CommonStore.instance.handleError)
 				.then(v => this.game = v),
-		10000);
+		3000);
 	}
 
 	private interval: any;
