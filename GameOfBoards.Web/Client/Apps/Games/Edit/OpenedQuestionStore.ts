@@ -4,6 +4,11 @@ import { HttpService } from '@Shared/HttpService';
 import { computed, observable } from 'mobx';
 import { QuestionWithAnswers } from '../CommonLogic';
 
+type GameHolder = {
+	game: IGameView;
+	questions: QuestionWithAnswers[];
+};
+
 export class OpenedQuestionStore {
 	private service = new GameApiControllerProxy(new HttpService());
 
@@ -17,38 +22,31 @@ export class OpenedQuestionStore {
 		this.selectedTeamId = '';
 	}
 
-
 	@observable
 	public answer: string;
 
-
 	@observable
 	public selectedTeamId: string;
-
 
 	@computed
 	public get canManuallyAnswer() {
 		return this.teamsWithoutAnswer.length !== 0;
 	}
 
-
 	@computed
 	public get question() {
 		return this.gameHolder.questions.find(q => q.questionId === this.questionId)!;
 	}
-
 
 	@computed
 	public get teamsWithoutAnswer() {
 		return this.registeredTeams.filter(rt => this.question.answers.find(a => a.teamId === rt.id) === undefined);
 	}
 
-
 	@computed
 	public get savingDisabled() {
 		return this.selectedTeamId === '' || this.answer.trim() === '' || this.teamsWithoutAnswer.find(t => t.id === this.selectedTeamId) === undefined;
 	}
-
 
 	public saveAnswer = () => {
 		this.service.updateTeamAnswerManually({
@@ -65,7 +63,6 @@ export class OpenedQuestionStore {
 			});
 	};
 
-
 	public markCorrect = (teamId: string, isCorrect: boolean) => {
 		this.service.updateTeamAnswerStatus({
 			id: this.gameHolder.game.id,
@@ -77,7 +74,3 @@ export class OpenedQuestionStore {
 			.then(this.onSave);
 	};
 }
-type GameHolder = {
-	game: IGameView;
-	questions: QuestionWithAnswers[];
-};

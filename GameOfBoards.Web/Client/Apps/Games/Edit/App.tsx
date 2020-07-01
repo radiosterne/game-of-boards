@@ -1,13 +1,14 @@
 import { Box, Button, Container, Grid, IconButton, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import ViewListIcon from '@material-ui/icons/ViewList';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import ViewListIcon from '@material-ui/icons/ViewList';
 import { GameState, IGamesEditAppSettings } from '@Shared/Contracts';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
 
 import { QuestionDrawer } from './QuestionDrawer';
+import { QuestionEditor } from './QuestionEditor';
 import { Store } from './Store';
 import { TeamsDrawer } from './TeamsDrawer';
 
@@ -59,26 +60,26 @@ export class App extends React.Component<IGamesEditAppSettings> {
 					</Box>
 					<PaperWithMargin>
 						<Typography variant='h6'>Список вопросов</Typography>
-						<Table>
+						<Table style={{ tableLayout: 'fixed' }}>
 							<TableHead>
 								<TableRow>
-									<TableCell />
+									<TableCell style={{ width: '1rem' }}/>
 									<TableCell>Вопрос</TableCell>
 									<TableCell>Ответы</TableCell>
-									<TableCell>Сдано</TableCell>
-									<TableCell>Правильно</TableCell>
-									<TableCell />
-									<TableCell />
-									<TableCell />
-									<TableCell />
+									<TableCell style={{ width: '5rem' }}>Сдано</TableCell>
+									<TableCell style={{ width: '7rem' }}>Правильно</TableCell>
+									<TableCell style={{ width: '7rem' }} />
+									<TableCell style={{ width: '4rem' }} />
+									<TableCell style={{ width: '4rem' }} />
+									<TableCell style={{ width: '4rem' }} />
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								{store.questions.map((question, idx) =>
 									<TableRow key={idx}>
 										<TableCell>{idx + 1}</TableCell>
-										<TableCell>{question.shortName}</TableCell>
-										<TableCell>{question.rightAnswers}</TableCell>
+										<TableCell><Ellipsis>{question.shortName}</Ellipsis></TableCell>
+										<TableCell><Ellipsis>{question.rightAnswers}</Ellipsis></TableCell>
 										<TableCell align='right'><b>{question.answersCount}</b></TableCell>
 										<TableCell align='right'><b>{question.correctAnswersCount}</b></TableCell>
 										<TableCell>
@@ -124,6 +125,7 @@ export class App extends React.Component<IGamesEditAppSettings> {
 			</Grid>
 			<TeamsDrawer store={store} />
 			<QuestionDrawer store={store} />
+			<QuestionEditor store={store} />
 		</PaddedContainer >;
 	}
 
@@ -139,4 +141,10 @@ const PaddedContainer = styled(Container)`
 
 const PaperWithMargin = styled(Paper)`
 	padding: ${props => props.theme.spacing(2)}px;
+`;
+
+const Ellipsis = styled.div`
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
 `;

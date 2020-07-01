@@ -1,7 +1,7 @@
 import { CommonStore } from '@Layout';
 import { GameApiControllerProxy, IGameView, IQuestion } from '@Shared/Contracts';
 import { HttpService } from '@Shared/HttpService';
-import { observable } from 'mobx';
+import { computed, observable } from 'mobx';
 
 export class QuestionEditorStore {
 	private service = new GameApiControllerProxy(new HttpService());
@@ -18,22 +18,22 @@ export class QuestionEditorStore {
 		this.questionText = question?.questionText || '';
 	}
 
-
 	@observable
 	public shortName: string;
-
 
 	@observable
 	public rightAnswers: string;
 
-
 	@observable
 	public points: number;
-
 
 	@observable
 	public questionText: string;
 
+	@computed
+	public get savingDisabled() {
+		return this.shortName.length === 0 || this.points < 1;
+	}
 
 	public save = () => this.service.updateQuestion({
 		id: this.gameId,
@@ -45,7 +45,6 @@ export class QuestionEditorStore {
 	})
 		.then(CommonStore.instance.handleError)
 		.then(this.onSave);
-
 
 	public cancel = () => this.onCancel();
 }

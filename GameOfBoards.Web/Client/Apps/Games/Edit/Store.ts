@@ -3,8 +3,8 @@ import { GameApiControllerProxy, GameState, IGameView, IGamesEditAppSettings, IU
 import { HttpService } from '@Shared/HttpService';
 import { computed, observable } from 'mobx';
 import { correlateQuestionsAndAnswers, getTeamsRegistrationStatus } from '../CommonLogic';
-import { QuestionEditorStore } from './QuestionEditorStore';
 import { OpenedQuestionStore } from './OpenedQuestionStore';
+import { QuestionEditorStore } from './QuestionEditorStore';
 
 export class Store {
 	private service = new GameApiControllerProxy(new HttpService());
@@ -19,7 +19,7 @@ export class Store {
 				.get({ id: this.game.id })
 				.then(CommonStore.instance.handleError)
 				.then(v => this.game = v),
-			3000);
+		3000);
 		this.questionEditor = null;
 	}
 
