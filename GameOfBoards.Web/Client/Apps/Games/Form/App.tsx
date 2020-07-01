@@ -45,12 +45,26 @@ export class App extends React.Component<IGamesFormAppSettings> {
 							{store.currentActiveQuestion && store.currentActiveQuestionIsAnswered && <Typography variant='h5' color='primary'>Ваш ответ на вопрос {store.currentActiveQuestion.name} принят!</Typography>}
 							{store.currentActiveQuestion && !store.currentActiveQuestionIsAnswered &&
 								<>
-									<Typography variant='h5' color='primary'>Вопрос {store.currentActiveQuestion.name}</Typography>
+									<Typography
+										variant='h5'
+										color='primary'>
+										Вопрос {store.currentActiveQuestion.name}
+									</Typography>
 									<Box mb={1} mt={1}>
-										<TextField placeholder='Ваш ответ' fullWidth onChange={evt => store.answer = evt.target.value}></TextField>
+										<TextField
+											placeholder='Ваш ответ'
+											fullWidth
+											onChange={evt => store.answer = evt.target.value} />
 									</Box>
 									<Box>
-										<Button color='primary' variant='contained' onClick={() => store.answerQuestion()} style={{ margin: 'auto', display: 'block' }}>Ответить</Button>
+										<Button
+											color='primary'
+											variant='contained'
+											disabled={store.savingDisabled}
+											onClick={() => store.answerQuestion()}
+											style={{ margin: 'auto', display: 'block' }}>
+												Ответить
+										</Button>
 									</Box>
 								</>}
 						</PaperWithMargin>

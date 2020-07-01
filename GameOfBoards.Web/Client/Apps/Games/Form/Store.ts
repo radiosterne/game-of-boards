@@ -33,6 +33,16 @@ export class Store {
 	public answer: string;
 
 	@computed
+	public get trimmedAnswer() {
+		return this.answer.trim();
+	}
+
+	@computed
+	public get savingDisabled() {
+		return this.trimmedAnswer.length === 0;
+	}
+
+	@computed
 	public get currentActiveQuestion() {
 		return this.game.questions.find(q => q.id === this.game.activeQuestion) || null;
 	}
@@ -57,7 +67,7 @@ export class Store {
 		this.service.updateTeamAnswer({
 			id: this.game.id,
 			questionId: q.id,
-			answer: this.answer,
+			answer: this.trimmedAnswer,
 			teamId: CommonStore.instance.user!.id
 		})
 			.then(CommonStore.instance.handleError)
