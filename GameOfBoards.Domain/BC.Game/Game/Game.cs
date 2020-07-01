@@ -1,5 +1,7 @@
 using EventFlow.Aggregates;
 using Functional.Maybe;
+using GameOfBoards.Domain.BC.Game.Game.Commands;
+using GameOfBoards.Domain.BC.Game.Game.Events;
 using GameOfBoards.Domain.SharedKernel;
 using JetBrains.Annotations;
 
@@ -20,7 +22,7 @@ namespace GameOfBoards.Domain.BC.Game.Game
 		{
 		}
 
-		public ExecutionResult<GameId> Update(UpdateGameCommand cmd, BusinessCallContext ctx)
+		public ExecutionResult<GameId> Update(UpdateGame cmd, BusinessCallContext ctx)
 		{
 			if (_name != cmd.Name)
 			{
@@ -56,7 +58,13 @@ namespace GameOfBoards.Domain.BC.Game.Game
 
 		public ExecutionResult<GameId> UpdateQuestion(UpdateQuestion cmd, BusinessCallContext context)
 		{
-			Emit(new QuestionUpdated(cmd.QuestionId.OrElse(QuestionId.New), cmd.ShortName, cmd.RightAnswers, context));
+			Emit(new QuestionUpdated(
+				cmd.QuestionId.OrElse(QuestionId.New),
+				cmd.ShortName,
+				cmd.RightAnswers,
+				cmd.QuestionText,
+				cmd.Points,
+				context));
 
 			return ExecutionResult<GameId>.Success(Id);
 		}

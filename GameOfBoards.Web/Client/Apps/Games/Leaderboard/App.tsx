@@ -31,12 +31,12 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 							<Table size='small' style={{ maxWidth: '100%', overflowX: 'scroll', minWidth: '800px' }}>
 								<TableHead>
 									<TableCell><b>Вопрос</b></TableCell>
-									{store.leaderboard.map(l => <TableCell key={l.name}><b>{l.name}</b></TableCell>)}
+									{store.scoreboard.map(l => <TableCell key={l.name}><b>{l.name}</b></TableCell>)}
 								</TableHead>
 								<TableBody>
 									{store.questionNames.map(qn => <TableRow key={qn.id}>
 										<TableCell>{qn.name}</TableCell>
-										{store.leaderboard.map(l => {
+										{store.scoreboard.map(l => {
 											const answer = l.answers.find(a => a.questionId === qn.id);
 											const state = answer
 												? (answer.autoCorrect || answer.markedCorrect)
@@ -55,7 +55,7 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 									</TableRow>)}
 									<TableRow>
 										<TableCell><b>Итого:</b></TableCell>
-										{store.leaderboard.map(l => <TableCell key={l.name}><b>{l.total}</b></TableCell>)}
+										{store.scoreboard.map(l => <TableCell key={l.name}><b>{l.total}</b></TableCell>)}
 									</TableRow>
 								</TableBody>
 							</Table>
@@ -77,7 +77,7 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 									<TableCell>{qn.name}</TableCell>
 									<TableCell>
 										<b>
-											{store.leaderboard
+											{store.scoreboard
 												.map(l => l.answers.find(a => a.questionId === qn.id))
 												.filter(l => !!l && (l.autoCorrect || l.markedCorrect))
 												.sort((l, r) => l!.moment.valueOf() - r!.moment.valueOf())[0]?.teamName || ''}
@@ -113,7 +113,7 @@ const ScoringTablePopup = observer(({ store }: { store: Store }) =>
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{store.scoringTable.map((team, idx) => <TableRow key={team.name} style={{ backgroundColor: idx % 2 === 0 ? '#5e708c' : '#8b99ac', color: '#fff' }}>
+						{store.leaderboard.map((team, idx) => <TableRow key={team.name} style={{ backgroundColor: idx % 2 === 0 ? '#5e708c' : '#8b99ac', color: '#fff' }}>
 							<TableCell><Typography variant='h5' style={{ color: 'white' }}>{team.place}</Typography></TableCell>
 							<TableCell><Typography variant='h5' style={{ color: 'white' }}>{team.name}</Typography></TableCell>
 							<TableCell align='right'><Typography variant='h5' style={{ color: 'white' }}>{team.total}</Typography></TableCell>

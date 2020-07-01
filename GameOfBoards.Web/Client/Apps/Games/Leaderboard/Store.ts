@@ -2,20 +2,8 @@ import { CommonStore } from '@Layout';
 import { Collections } from '@Shared/Collections';
 import { GameApiControllerProxy, IGameView, IGamesLeaderboardAppSettings, IUserView } from '@Shared/Contracts';
 import { HttpService } from '@Shared/HttpService';
-import * as dayjs from 'dayjs';
 import { computed, observable } from 'mobx';
-
-
-type Answer = {
-	teamName: string;
-	teamId: string;
-	autoCorrect: boolean;
-	markedCorrect: boolean;
-	question: string;
-	questionId: string;
-	answerText: string;
-	moment: dayjs.Dayjs;
-};
+import { correlateQuestionsAndAnswers, getTeamsRegistrationStatus } from '../CommonLogic';
 
 export class Store {
 	constructor(props: IGamesLeaderboardAppSettings) {
@@ -49,72 +37,54 @@ export class Store {
 
 	@computed
 	public get registeredTeams() {
-		return this.teams
-			.map(t => ({ ...t, registered: this.game.registeredTeams.indexOf(t.id) !== -1 }))
-			.filter(t => t.registered)
-			.sort((a, b) => a.name.fullForm.localeCompare(b.name.fullForm));
+		return getTeamsRegistrationStatus(this.game, this.teams)
+			.filter(t => t.registered);
 	}
 
 	@computed
 	public get questions() {
-		return this.game.questions
-			.map(q => ({
-				...q,
-				isActive: this.game.activeQuestionId === q.questionId,
-				answers: this.game.answers
-					.filter(answer => answer.questionId === q.questionId)
-					.map(answer => ({
-						...answer,
-						teamName: this.teams.find(t => t.id === answer.teamId)!.name.fullForm,
-						teamId: answer.teamId,
-						autoCorrect: q.rightAnswers.split(';').map(x => x.toLowerCase()).indexOf(answer.answerText.toLowerCase()) !== -1,
-						markedCorrect: this.game.corrections.find(c => c.questionId === q.questionId && c.teamId === answer.teamId)?.isCorrect || false,
-						question: q.shortName,
-						questionId: q.questionId
-					}))
-			}));
+		return correlateQuestionsAndAnswers(this.game, this.teams);
 	}
 
 	@computed
-	public get leaderboard() {
+	public get scoreboard() {
 		const teams = Collections.chain(this.questions)
 			.flatMap(q => q.answers)
 			.groupBy(q => q.teamName)
 			.map(group => ({
 				name: group[0].teamName,
 				teamId: group[0].teamId,
-				total: group.filter(g => g.autoCorrect || g.markedCorrect).length,
+				total: group.reduce((acc, next) => acc + next.score, 0),
 				answers: group
 			}))
 			.value();
 
 		return Collections.chain(this.registeredTeams)
-			.map(rt => teams.find(t => t.teamId === rt.id) || { name: rt.name.fullForm, teamId: rt.id, total: 0, answers: [] as Answer[] })
+			.map(rt => teams.find(t => t.teamId === rt.id) || { name: rt.name.fullForm, teamId: rt.id, total: 0, answers: [] })
 			.value();
 	}
 
 	@computed
-	public get scoringTable() {
-		const leaderboard = this.leaderboard;
-		return Collections.chain(leaderboard)
+	public get leaderboard() {
+		const scoreboard = this.scoreboard;
+		return Collections.chain(scoreboard)
 			.groupBy(c => c.total)
 			.map(group => ({
 				total: group[0].total,
 				teams: group
 			}))
 			.flatMap(group => {
-				const before = this.leaderboard.filter(t => t.total > group.total).length;
+				const before = this.scoreboard.filter(t => t.total > group.total).length;
 				const place = before + 1;
 				return group.teams.map(t => ({ name: t.name, total: t.total, place: place }));
 			})
-			.sortBy(x => x.place, x => x.name, )
+			.sortBy(x => x.place, x => x.name)
 			.value();
 	}
 
 	@computed
 	public get questionNames() {
-		return Collections.chain(this.questions)
-			.map(q => ({ id: q.questionId, name: q.shortName }))
-			.value();
+		return this.questions
+			.map(q => ({ id: q.questionId, name: q.shortName }));
 	}
 }

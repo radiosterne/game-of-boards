@@ -59,6 +59,7 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 			_signalrHubs.AddRange(signalrHubs);
 
 			var signalrHubClients = signalrHubs
+				// ReSharper disable once PossibleNullReferenceException
 				.Select(hubType => hubType.BaseType.GenericTypeArguments[0])
 				.ToArray();
 

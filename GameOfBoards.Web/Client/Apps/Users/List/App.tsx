@@ -40,7 +40,9 @@ export class App extends React.Component<IUsersListAppSettings> {
 											onClick={() => {
 												const url = `https://gameofboards.blumenkraft.me/account/shortLogin?id=${user.id}&salt=${encodeURIComponent(user.salt || '')}`;
 												navigator.clipboard.writeText(url);
-											}}>Ссылка на вход</Button>}
+											}}>
+												Ссылка на вход
+										</Button>}
 									</>
 							}}
 							canCreate />

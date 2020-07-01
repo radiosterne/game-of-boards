@@ -2,7 +2,6 @@
 using Functional.Either;
 using Functional.Maybe;
 using GameOfBoards.Domain.Extensions;
-using GameOfBoards.Domain.SharedKernel;
 
 namespace GameOfBoards.Domain.SharedKernel
 {

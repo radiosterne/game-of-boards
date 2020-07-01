@@ -24,6 +24,7 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 
 			return type
 				.GetProperties()
+				// ReSharper disable once PossibleNullReferenceException
 				.Concat(type.BaseType.GetProperties())
 				.Where(property => constructorArgumentNames.Any(arg =>
 					string.Equals(arg, property.Name, StringComparison.OrdinalIgnoreCase)))

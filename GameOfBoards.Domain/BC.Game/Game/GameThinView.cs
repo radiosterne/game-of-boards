@@ -54,17 +54,4 @@ namespace GameOfBoards.Domain.BC.Game.Game
 				view.Questions.Select(q => new QuestionThinView(q.QuestionId, q.ShortName)).ToArray(),
 				teamName);
 	}
-
-	public class QuestionThinView
-	{
-		public QuestionThinView(QuestionId id, string name)
-		{
-			Id = id;
-			Name = name;
-		}
-
-		public string Name { get; }
-		
-		public QuestionId Id { get; }
-	}
 }

@@ -1,13 +1,14 @@
-
-using GameOfBoards.Domain.BC.Game;
 using EventFlow.AspNetCore.Extensions;
 using EventFlow.Configuration;
 using EventFlow.DependencyInjection.Extensions;
+using EventFlow.Extensions;
 using EventFlow.Hangfire.Extensions;
 using EventFlow.MongoDB.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using GameOfBoards.Domain.BC.Authentication.User;
+using GameOfBoards.Domain.BC.Game.Game;
+using GameOfBoards.Domain.BC.Game.Game.Migrations;
 using GameOfBoards.Infrastructure;
 using GameOfBoards.Infrastructure.Serialization.Bson;
 using GameOfBoards.Web.Infrastructure.Configuration;
@@ -35,7 +36,8 @@ namespace GameOfBoards.Web.Infrastructure.EventFlow
 				.AddAspNetCore(o => o.UseDefaults().AddUserClaimsMetadata())
 				.ConfigureMongoDb(mongoUrlBuilder.ToMongoUrl().ToString(), mongoUrlBuilder.DatabaseName)
 				.UseMongoDbEventStore()
-				.UseHangfireJobScheduler());
+				.UseHangfireJobScheduler()
+				.AddEventUpgrader<Game, GameId, QuestionUpdatedV1ToV2Updater>());
 
 			return services;
 		}

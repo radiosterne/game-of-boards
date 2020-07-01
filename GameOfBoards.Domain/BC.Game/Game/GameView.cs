@@ -3,6 +3,7 @@ using EventFlow.Aggregates;
 using EventFlow.ReadStores;
 using Functional.Maybe;
 using GameOfBoards.Domain.BC.Authentication.User;
+using GameOfBoards.Domain.BC.Game.Game.Events;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -41,7 +42,7 @@ namespace GameOfBoards.Domain.BC.Game.Game
 			SetId(domainEvent);
 			var e = domainEvent.AggregateEvent;
 			Questions.RemoveAll(a => a.QuestionId == e.QuestionId);
-			Questions.Add(new Question(e.QuestionId, e.ShortName, e.RightAnswers));
+			Questions.Add(new Question(e.QuestionId, e.ShortName, e.RightAnswers, e.QuestionText, e.Points));
 		}
 
 		public List<UserId> RegisteredTeams { get; private set; } = new List<UserId>();

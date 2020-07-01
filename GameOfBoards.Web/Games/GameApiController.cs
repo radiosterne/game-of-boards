@@ -6,6 +6,8 @@ using Functional.Maybe;
 using GameOfBoards.Domain.BC.Authentication.User;
 using Microsoft.AspNetCore.Mvc;
 using GameOfBoards.Domain.BC.Game.Game;
+using GameOfBoards.Domain.BC.Game.Game.Commands;
+using GameOfBoards.Domain.BC.Game.Game.Queries;
 using GameOfBoards.Domain.Configuration;
 using GameOfBoards.Domain.Extensions;
 using GameOfBoards.Domain.SharedKernel;
@@ -61,6 +63,13 @@ namespace GameOfBoards.Web.Games
 					return GameThinView.FromView(game, teamId, userView.Where(u => u.IsTeam).Select(u => u.Name.FullForm));
 				})
 				.AsActionResult();
+		
+		public Task<ActionResult<ExecutionResult<GameView>>> UpdateTeamAnswerManually(UpdateTeamAnswer cmd) =>
+			CommandBus
+				.PublishAsync(cmd, CancellationToken.None)
+				.Then(async id => (await QueryProcessor.ProcessAsync(new GameByIdQuery(id),
+					CancellationToken.None)).Value)
+				.AsActionResult();
 
 
 		public Task<ActionResult<ExecutionResult<GameView>>> UpdateActiveQuestion(UpdateActiveQuestion cmd) =>
@@ -94,7 +103,7 @@ namespace GameOfBoards.Web.Games
 					CancellationToken.None)).Value)
 				.AsActionResult();
 
-		public Task<ActionResult<ExecutionResult<GameThinView>>> Update(UpdateGameCommand cmd) =>
+		public Task<ActionResult<ExecutionResult<GameThinView>>> Update(UpdateGame cmd) =>
 			CommandBus
 				.PublishAsync(cmd, CancellationToken.None)
 				.Then(async id =>

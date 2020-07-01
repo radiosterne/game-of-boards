@@ -6,6 +6,7 @@ using EventFlow.Queries;
 using Functional.Maybe;
 using GameOfBoards.Domain.BC.Authentication.User;
 using GameOfBoards.Domain.BC.Game.Game;
+using GameOfBoards.Domain.BC.Game.Game.Queries;
 using GameOfBoards.Domain.Configuration;
 using GameOfBoards.Domain.Extensions;
 using GameOfBoards.Web.Infrastructure;

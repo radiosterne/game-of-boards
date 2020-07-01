@@ -60,6 +60,7 @@ export class Server extends React.Component<IServerProps, {}> {
 				<meta name='release-version' content={universeState.version} />
 				<meta name='viewport' content='width=device-width' />
 				<title>{title}</title>
+				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap"/>
 				<style
 					id={Client.materialUiStylesId}
 					dangerouslySetInnerHTML={{ __html: materialUiSheet.toString() }} />

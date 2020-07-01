@@ -1,17 +1,19 @@
-import { Box, Button, Container, Drawer, Grid, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
+import { Box, Button, Container, Grid, IconButton, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import ViewListIcon from '@material-ui/icons/ViewList';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { GameState, IGamesEditAppSettings } from '@Shared/Contracts';
-import { TableEditor } from '@Shared/Editor';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { QuestionDrawer } from './QuestionDrawer';
 import { Store } from './Store';
+import { TeamsDrawer } from './TeamsDrawer';
 
 @observer
 export class App extends React.Component<IGamesEditAppSettings> {
-	public static getTitle = (props: IGamesEditAppSettings) => `Игра ${props.game.name}`;
+	public static getTitle = (props: IGamesEditAppSettings) => `Управление игрой «${props.game.name}»`;
 
 	private store: Store;
 
@@ -57,28 +59,66 @@ export class App extends React.Component<IGamesEditAppSettings> {
 					</Box>
 					<PaperWithMargin>
 						<Typography variant='h6'>Список вопросов</Typography>
-						<TableEditor
-							entities={store.questions}
-							scheme={store.questionEditScheme}
-							onSubmit={store.updateQuestion}
-							customCell={{
-								title: '',
-								render: question =>
-									<>
-										<Button
-											variant='outlined'
-											onClick={() => store.openedQuestionId = question.questionId}>
-											Ответы
-										</Button>
-										<Button
-											variant='outlined'
-											onClick={() => store.updateActiveQuestion(question.questionId, !question.isActive)}
-											style={{ marginLeft: '8px' }}>
-											{question.isActive ? 'Закрыть приём' : 'Начать приём'}
-										</Button>
-									</>
-							}}
-							canCreate />
+						<Table>
+							<TableHead>
+								<TableRow>
+									<TableCell />
+									<TableCell>Вопрос</TableCell>
+									<TableCell>Ответы</TableCell>
+									<TableCell>Сдано</TableCell>
+									<TableCell>Правильно</TableCell>
+									<TableCell />
+									<TableCell />
+									<TableCell />
+									<TableCell />
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{store.questions.map((question, idx) =>
+									<TableRow key={idx}>
+										<TableCell>{idx + 1}</TableCell>
+										<TableCell>{question.shortName}</TableCell>
+										<TableCell>{question.rightAnswers}</TableCell>
+										<TableCell align='right'><b>{question.answersCount}</b></TableCell>
+										<TableCell align='right'><b>{question.correctAnswersCount}</b></TableCell>
+										<TableCell>
+											<Button
+												variant='contained'
+												onClick={() => store.updateActiveQuestion(question.questionId, !question.isActive)}
+												color={question.isActive ? 'secondary' : 'primary'}
+												style={{ color: '#fff' }}>
+												{question.isActive ? 'Закрыть' : 'Открыть'}
+											</Button>
+										</TableCell>
+										<TableCell>
+											<IconButton
+												onClick={() => navigator.clipboard.writeText(question.questionText)}>
+												<FileCopyIcon color='primary' />
+											</IconButton>
+										</TableCell>
+										<TableCell>
+											<IconButton
+												onClick={() => store.openedQuestionId = question.questionId}>
+												<ViewListIcon color='primary' />
+											</IconButton>
+										</TableCell>
+										<TableCell>
+											<IconButton
+												onClick={() => store.editQuestion(question.questionId)}>
+												<EditIcon color='primary' />
+											</IconButton>
+										</TableCell>
+									</TableRow>)}
+							</TableBody>
+						</Table>
+						<Box pt={1}>
+							<Button
+								variant='outlined'
+								onClick={store.createQuestion}
+								color='primary'>
+								Добавить вопрос
+							</Button>
+						</Box>
 					</PaperWithMargin>
 				</Grid>
 			</Grid>
@@ -86,92 +126,11 @@ export class App extends React.Component<IGamesEditAppSettings> {
 			<QuestionDrawer store={store} />
 		</PaddedContainer >;
 	}
+
+	componentWillUnmount = () => {
+		this.store.unsubscribe();
+	};
 }
-
-const TeamsDrawer = observer(({ store }: { store: Store }) =>
-	<Drawer open={store.teamDrawerOpen} onClose={() => store.teamDrawerOpen = false} anchor='right'>
-		<Box p={1}>
-			<Typography variant='h6'>Зарегистрированные команды</Typography>
-			<Table size='small'>
-				<TableHead>
-					<TableRow>
-						<TableCell>
-							Название
-						</TableCell>
-						<TableCell>
-							Зарегистрирована
-						</TableCell>
-						<TableCell />
-					</TableRow>
-				</TableHead>
-				<TableBody>
-
-					{store.teamsAndRegistrations.map(tnr =>
-						<TableRow key={tnr.id}>
-							<TableCell>
-								{tnr.name.fullForm}
-							</TableCell>
-							<TableCell>
-								{tnr.registered ? <CheckIcon /> : <ClearIcon />}
-							</TableCell>
-							<TableCell>
-								<Button variant='outlined' onClick={() => store.registerTeam(tnr.id, !tnr.registered)}>
-									{tnr.registered ? 'Снять с регистрации' : 'Зарегистрировать' }
-								</Button>
-							</TableCell>
-						</TableRow>)}
-				</TableBody>
-			</Table>
-		</Box>
-	</Drawer>);
-
-const QuestionDrawer = observer(({ store }: { store: Store }) =>
-	<Drawer open={!!store.openedQuestion} onClose={() => store.openedQuestionId = null} anchor='right'>
-		<Box p={2}>
-			<Typography variant='h6'>Вопрос {store.openedQuestion?.shortName}</Typography>
-			<Table size='small'>
-				<TableHead>
-					<TableRow>
-						<TableCell>
-							Команда
-						</TableCell>
-						<TableCell>
-							Ответ
-						</TableCell>
-						<TableCell>
-							Зачтён автоматически
-						</TableCell>
-						<TableCell>
-							Зачтён вручную
-						</TableCell>
-						<TableCell />
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{store.openedQuestion?.answers.map(a =>
-						<TableRow key={a.teamId}>
-							<TableCell>
-								{a.teamName}
-							</TableCell>
-							<TableCell>
-								{a.answerText}
-							</TableCell>
-							<TableCell>
-								{a.autoCorrect ? <CheckIcon /> : <ClearIcon />}
-							</TableCell>
-							<TableCell>
-								{a.markedCorrect ? <CheckIcon /> : <ClearIcon />}
-							</TableCell>
-							<TableCell>
-								<Button variant='outlined' onClick={() => store.markCorrect(a.teamId, store.openedQuestion?.questionId || '', !a.markedCorrect)}>
-									{a.markedCorrect ? 'Снять' : 'Зачесть'}
-								</Button>
-							</TableCell>
-						</TableRow>)}
-				</TableBody>
-			</Table>
-		</Box>
-	</Drawer>);
 
 const PaddedContainer = styled(Container)`
 	padding-top: ${props => props.theme.spacing(4)}px;
