@@ -1,11 +1,11 @@
-import { Box, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Box, Grid, IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { IGamesLeaderboardAppSettings } from '@Shared/Contracts';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
-import { Centerer } from '../../../Layout/Centerer';
 
+import { ScoringTablePopup } from './ScoringTablePopup';
 import { Store } from './Store';
 
 @observer
@@ -110,41 +110,6 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 	};
 }
 
-const ScoringTablePopup = observer(({ store }: { store: Store }) =>
-	<Modal
-		open={store.scoringTableOpen}
-		onClose={() => store.scoringTableOpen = false}>
-		<Centerer>
-			<Backdrop square>
-				<WhiteTable>
-					<TableHead>
-						<TableRow style={{ backgroundColor: '#213c5e' }}>
-							<TableCell><Typography variant='h5' style={{ color: 'white' }}>Место</Typography></TableCell>
-							<TableCell><Typography variant='h5' style={{ color: 'white' }}>Название команды</Typography></TableCell>
-							<TableCell><Typography variant='h5' style={{ color: 'white' }}>Правильных ответов</Typography></TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{store.leaderboard.map((team, idx) => <TableRow key={team.name} style={{ backgroundColor: idx % 2 === 0 ? '#5e708c' : '#8b99ac', color: '#fff' }}>
-							<TableCell><Typography variant='h5' style={{ color: 'white' }}>{team.place}</Typography></TableCell>
-							<TableCell><Typography variant='h5' style={{ color: 'white' }}>{team.name}</Typography></TableCell>
-							<TableCell align='right'><Typography variant='h5' style={{ color: 'white' }}>{team.total}</Typography></TableCell>
-						</TableRow>)}
-					</TableBody>
-				</WhiteTable>
-			</Backdrop>
-		</Centerer>
-	</Modal>);
-
 const PaperWithMargin = styled(Paper)`
 	padding: ${props => props.theme.spacing(2)}px;
-`;
-
-const Backdrop = styled(Paper)`
-	min-height: 80%;
-	max-height: 80%;
-`;
-
-const WhiteTable = styled(Table)`
-	color: white;
 `;

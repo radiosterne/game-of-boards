@@ -2,7 +2,7 @@ import { Box, Button, Container, Grid, IconButton, MenuItem, Paper, Table, Table
 import EditIcon from '@material-ui/icons/Edit';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ViewListIcon from '@material-ui/icons/ViewList';
-import { GameState, IGamesEditAppSettings, GamesController } from '@Shared/Contracts';
+import { GameState, GamesController, IGamesEditAppSettings } from '@Shared/Contracts';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -11,7 +11,6 @@ import { QuestionDrawer } from './QuestionDrawer';
 import { QuestionEditor } from './QuestionEditor';
 import { Store } from './Store';
 import { TeamsDrawer } from './TeamsDrawer';
-import { Router } from '@Shared/Router';
 
 @observer
 export class App extends React.Component<IGamesEditAppSettings> {
