@@ -7,7 +7,7 @@ import { Store } from './Store';
 
 export const TeamsDrawer = observer(({ store }: { store: Store }) =>
 	<Drawer open={store.teamDrawerOpen} onClose={() => store.teamDrawerOpen = false} anchor='right'>
-		<Box p={1}>
+		<Box p={2}>
 			<Typography variant='h6'>Зарегистрированные команды</Typography>
 			<Table size='small'>
 				<TableHead>
