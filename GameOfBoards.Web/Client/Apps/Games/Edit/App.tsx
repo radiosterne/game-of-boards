@@ -2,7 +2,7 @@ import { Box, Button, Container, Grid, IconButton, MenuItem, Paper, Table, Table
 import EditIcon from '@material-ui/icons/Edit';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ViewListIcon from '@material-ui/icons/ViewList';
-import { GameState, IGamesEditAppSettings } from '@Shared/Contracts';
+import { GameState, IGamesEditAppSettings, GamesController } from '@Shared/Contracts';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import { QuestionDrawer } from './QuestionDrawer';
 import { QuestionEditor } from './QuestionEditor';
 import { Store } from './Store';
 import { TeamsDrawer } from './TeamsDrawer';
+import { Router } from '@Shared/Router';
 
 @observer
 export class App extends React.Component<IGamesEditAppSettings> {
@@ -32,7 +33,7 @@ export class App extends React.Component<IGamesEditAppSettings> {
 						<PaperWithMargin>
 							<Typography variant='h6'>Общие настройки</Typography>
 							<Grid container>
-								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center' }}>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 									<Typography variant='button' style={{ marginRight: '8px' }}>Состояние:</Typography>
 									<TextField
 										value={store.game.state}
@@ -49,15 +50,20 @@ export class App extends React.Component<IGamesEditAppSettings> {
 										</MenuItem>
 									</TextField>
 								</Grid>
-								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center' }}>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 									<Typography variant='button' style={{ marginRight: '8px' }}>Список команд:</Typography>
 									<Button variant='outlined' color='primary' onClick={() => store.teamDrawerOpen = true} size='small'>
 										Открыть
 									</Button>
 								</Grid>
-								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center' }}>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
 									<Button variant='contained' color='primary' onClick={store.savePasswords} size='small'>
 										Сохранить ссылки
+									</Button>
+								</Grid>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+									<Button href={GamesController.leaderboard(store.game.id).getUrl(false)} target='_blank' variant='contained' color='primary' size='small'>
+										К лидерборду
 									</Button>
 								</Grid>
 							</Grid>

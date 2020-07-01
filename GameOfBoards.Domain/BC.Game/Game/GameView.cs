@@ -41,8 +41,15 @@ namespace GameOfBoards.Domain.BC.Game.Game
 		{
 			SetId(domainEvent);
 			var e = domainEvent.AggregateEvent;
-			Questions.RemoveAll(a => a.QuestionId == e.QuestionId);
-			Questions.Add(new Question(e.QuestionId, e.ShortName, e.RightAnswers, e.QuestionText, e.Points));
+			var index = Questions.FindIndex(a => a.QuestionId == e.QuestionId);
+			if (index >= 0)
+			{
+				Questions[index] = new Question(e.QuestionId, e.ShortName, e.RightAnswers, e.QuestionText, e.Points);
+			}
+			else
+			{
+				Questions.Add(new Question(e.QuestionId, e.ShortName, e.RightAnswers, e.QuestionText, e.Points));
+			}
 		}
 
 		public List<UserId> RegisteredTeams { get; private set; } = new List<UserId>();

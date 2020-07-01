@@ -85,6 +85,6 @@ export class Store {
 	@computed
 	public get questionNames() {
 		return this.questions
-			.map(q => ({ id: q.questionId, name: q.shortName }));
+			.map(q => ({ id: q.questionId, name: q.shortName, isActive: q.isActive }));
 	}
 }

@@ -26,30 +26,42 @@ export class App extends React.Component<IGamesLeaderboardAppSettings> {
 				<Grid item xs={12}>
 					<Box mb={2}>
 						<PaperWithMargin style={{ overflowX: 'scroll' }}>
-							<Typography variant='h6' style={{ display: 'inline' }}>Сводка</Typography>
-							<IconButton style={{ marginLeft: '8px' }} size='small' onClick={() => store.scoringTableOpen = true}><FormatListNumberedIcon /></IconButton>
-							<Table size='small' style={{ maxWidth: '100%', overflowX: 'scroll', minWidth: '800px' }}>
+							<Typography variant='h5' style={{ display: 'inline' }}>Сводка</Typography>
+							<IconButton style={{ marginLeft: '8px', marginTop: '-6px' }} size='small' onClick={() => store.scoringTableOpen = true}><FormatListNumberedIcon /></IconButton>
+							<Table
+								size='small'
+								style={{ maxWidth: '100%', overflowX: 'scroll', minWidth: '800px' }}>
 								<TableHead>
 									<TableCell><b>Вопрос</b></TableCell>
-									{store.scoreboard.map(l => <TableCell key={l.name}><b>{l.name}</b></TableCell>)}
+									{store.scoreboard.map(l =>
+										<TableCell
+											key={l.name}>
+											<b>{l.name}</b>
+										</TableCell>)}
 								</TableHead>
 								<TableBody>
 									{store.questionNames.map(qn => <TableRow key={qn.id}>
-										<TableCell>{qn.name}</TableCell>
+										<TableCell
+											style={{
+												backgroundColor: qn.isActive ? '#94ac24' : 'unset',
+												color: qn.isActive ? '#fff' : '#333'
+											}}>
+											{qn.name}
+										</TableCell>
 										{store.scoreboard.map(l => {
 											const answer = l.answers.find(a => a.questionId === qn.id);
 											const state = answer
-												? (answer.autoCorrect || answer.markedCorrect)
+												? answer.isCorrect
 													? 'Верно'
 													: 'Неверно'
 												: 'Нет ответа';
 											const color = answer
-												? (answer.autoCorrect || answer.markedCorrect)
+												? answer.isCorrect
 													? '#94ac24'
 													: '#000'
 												: '#808080';
 
-											const shouldBeBold = answer && (answer.autoCorrect || answer.markedCorrect);
+											const shouldBeBold = answer && answer.isCorrect;
 											return <TableCell style={{ color: color, fontWeight: shouldBeBold ? 'bold' : 'normal' }} key={l.name}>{state}</TableCell>;
 										})}
 									</TableRow>)}
