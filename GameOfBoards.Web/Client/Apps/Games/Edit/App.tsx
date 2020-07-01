@@ -32,7 +32,7 @@ export class App extends React.Component<IGamesEditAppSettings> {
 						<PaperWithMargin>
 							<Typography variant='h6'>Общие настройки</Typography>
 							<Grid container>
-								<Grid item xs={4} style={{ display: 'flex', alignItems: 'center' }}>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center' }}>
 									<Typography variant='button' style={{ marginRight: '8px' }}>Состояние:</Typography>
 									<TextField
 										value={store.game.state}
@@ -49,10 +49,15 @@ export class App extends React.Component<IGamesEditAppSettings> {
 										</MenuItem>
 									</TextField>
 								</Grid>
-								<Grid item xs={4} style={{ display: 'flex', alignItems: 'center' }}>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center' }}>
 									<Typography variant='button' style={{ marginRight: '8px' }}>Список команд:</Typography>
-									<Button variant='outlined' onClick={() => store.teamDrawerOpen = true} size='small'>
-										открыть
+									<Button variant='outlined' color='primary' onClick={() => store.teamDrawerOpen = true} size='small'>
+										Открыть
+									</Button>
+								</Grid>
+								<Grid item xs={3} style={{ display: 'flex', alignItems: 'center' }}>
+									<Button variant='contained' color='primary' onClick={store.savePasswords} size='small'>
+										Сохранить ссылки
 									</Button>
 								</Grid>
 							</Grid>

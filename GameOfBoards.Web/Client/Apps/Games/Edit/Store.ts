@@ -2,9 +2,11 @@ import { CommonStore } from '@Layout';
 import { GameApiControllerProxy, GameState, IGameView, IGamesEditAppSettings, IUserView } from '@Shared/Contracts';
 import { HttpService } from '@Shared/HttpService';
 import { computed, observable } from 'mobx';
+import * as xlsx from 'xlsx';
 import { correlateQuestionsAndAnswers, getTeamsRegistrationStatus } from '../CommonLogic';
 import { OpenedQuestionStore } from './OpenedQuestionStore';
 import { QuestionEditorStore } from './QuestionEditorStore';
+
 
 export class Store {
 	private service = new GameApiControllerProxy(new HttpService());
@@ -112,5 +114,19 @@ export class Store {
 		})
 			.then(CommonStore.instance.handleError)
 			.then(v => this.game = v);
+	};
+
+	public savePasswords = () => {
+		const teams = this.teamsAndRegistrations
+			.filter(t => t.isTeam)
+			.map(t => [ t.name.fullForm, `https://gameofboards.blumenkraft.me/account/shortLogin?id=${t.id}&salt=${encodeURIComponent(t.salt || '')}`]);
+
+		const results = [['Команда', 'Ссылка']];
+		results.push(...teams);
+
+		const book = xlsx.utils.book_new();
+		const sheet = xlsx.utils.aoa_to_sheet(results);
+		xlsx.utils.book_append_sheet(book, sheet, 'Ссылки');
+		xlsx.writeFile(book, `${this.game.name}.xlsx`);
 	};
 }
