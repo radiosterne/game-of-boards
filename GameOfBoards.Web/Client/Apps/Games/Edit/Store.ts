@@ -118,7 +118,7 @@ export class Store {
 
 	public savePasswords = () => {
 		const teams = this.teamsAndRegistrations
-			.filter(t => t.isTeam)
+			.filter(t => t.isTeam && t.registered)
 			.map(t => [ t.name.fullForm, `https://gameofboards.blumenkraft.me/account/shortLogin?id=${t.id}&salt=${encodeURIComponent(t.salt || '')}`]);
 
 		const results = [['Команда', 'Ссылка']];
