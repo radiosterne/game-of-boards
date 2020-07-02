@@ -1,8 +1,10 @@
+using System;
 using EventFlow.AspNetCore.Extensions;
 using EventFlow.Configuration;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.Hangfire.Extensions;
+using EventFlow.Logs;
 using EventFlow.MongoDB.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -32,6 +34,7 @@ namespace GameOfBoards.Web.Infrastructure.EventFlow
 				{
 					r.Register<ReadModelPopulator, ReadModelPopulator>();
 					r.Register<IBootstrap, SuperuserEnsuringService>();
+					r.Register<ILog, NoOpLog>();
 				})
 				.AddAspNetCore(o => o.UseDefaults().AddUserClaimsMetadata())
 				.ConfigureMongoDb(mongoUrlBuilder.ToMongoUrl().ToString(), mongoUrlBuilder.DatabaseName)
@@ -41,5 +44,21 @@ namespace GameOfBoards.Web.Infrastructure.EventFlow
 
 			return services;
 		}
+	}
+	
+	// ReSharper disable once ClassNeverInstantiated.Global
+	public class NoOpLog: Log
+	{
+		public override void Write(LogLevel logLevel, string format, params object[] args)
+		{
+		}
+
+		public override void Write(LogLevel logLevel, Exception exception, string format, params object[] args)
+		{
+		}
+
+		protected override bool IsVerboseEnabled => false;
+		protected override bool IsInformationEnabled => false;
+		protected override bool IsDebugEnabled => false;
 	}
 }
