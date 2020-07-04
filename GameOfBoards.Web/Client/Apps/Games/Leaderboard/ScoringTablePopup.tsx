@@ -55,6 +55,7 @@ export const Backdrop = styled(Paper)`
 
 export const WhiteTable = styled(Table)`
 	color: white;
+	width: 600px;
 	margin-left: 16px;
 	:first-of-type {
 		margin-left: 0px;
