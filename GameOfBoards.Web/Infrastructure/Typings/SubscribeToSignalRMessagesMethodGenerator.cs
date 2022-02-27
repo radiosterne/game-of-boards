@@ -9,7 +9,7 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 {
 	public class SubscribeToSignalRMessagesMethodGenerator : MethodCodeGenerator
 	{
-		public override RtFuncion GenerateNode(MethodInfo element, RtFuncion result, TypeResolver resolver)
+		public override RtFunction GenerateNode(MethodInfo element, RtFunction result, TypeResolver resolver)
 		{
 			result = base.GenerateNode(element, result, resolver);
 

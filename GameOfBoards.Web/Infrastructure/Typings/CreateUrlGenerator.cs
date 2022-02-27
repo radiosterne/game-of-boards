@@ -14,7 +14,7 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 	[UsedImplicitly]
 	public class CreateUrlGenerator : MethodCodeGenerator
 	{
-		public override RtFuncion GenerateNode(MethodInfo action, RtFuncion result, TypeResolver resolver)
+		public override RtFunction GenerateNode(MethodInfo action, RtFunction result, TypeResolver resolver)
 		{
 			try
 			{

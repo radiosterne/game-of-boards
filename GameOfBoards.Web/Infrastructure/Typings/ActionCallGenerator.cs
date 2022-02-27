@@ -17,7 +17,7 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 	[UsedImplicitly]
 	public class ActionCallGenerator : MethodCodeGenerator
 	{
-		public override RtFuncion GenerateNode(MethodInfo action, RtFuncion result, TypeResolver resolver)
+		public override RtFunction GenerateNode(MethodInfo action, RtFunction result, TypeResolver resolver)
 		{
 			try
 			{
@@ -119,7 +119,7 @@ return this.http.post(`{path}?${{params}}`, {{}})
 			return $"fromClient({clientArg.Identifier})";
 		}
 
-		private Arg[] ListArguments(MethodInfo action, RtFuncion result) =>
+		private Arg[] ListArguments(MethodInfo action, RtFunction result) =>
 			result.Arguments.EquiZip(action.GetParameters(), (client, server) => new Arg(client, server))
 				.ToArray();
 

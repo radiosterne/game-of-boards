@@ -39,11 +39,11 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 			}
 		}
 
-		private static RtFuncion CreateTypeGuard(Type eventType, TypeResolver resolver)
+		private static RtFunction CreateTypeGuard(Type eventType, TypeResolver resolver)
 		{
 			var typeName = resolver.ResolveTypeName(eventType);
 
-			return new RtFuncion
+			return new RtFunction
 			{
 				AccessModifier = AccessModifier.Public,
 				IsStatic = true,
@@ -70,13 +70,13 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 				AccessModifier = AccessModifier.Public
 			};
 
-		private static RtFuncion CreateDeserializer(RtField[] fields, RtTypeName type)
+		private static RtFunction CreateDeserializer(RtField[] fields, RtTypeName type)
 		{
 			var constructorArguments = fields
 				.Select(field => $"\tfromServer(data['{field.Identifier.IdentifierName}']) as {field.Type}")
 				.StringJoin(",\r\n");
 
-			return new RtFuncion
+			return new RtFunction
 			{
 				Identifier = new RtIdentifier("create"),
 				AccessModifier = AccessModifier.Public,

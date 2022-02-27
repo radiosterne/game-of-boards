@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 
 ENV CORECLR_ENABLE_PROFILING=1 \
 CORECLR_PROFILER={36032161-FFC0-4B61-B559-F6C5D41BAE5A} \

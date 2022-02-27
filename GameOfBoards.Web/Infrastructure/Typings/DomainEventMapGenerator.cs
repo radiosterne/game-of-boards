@@ -16,14 +16,14 @@ namespace GameOfBoards.Web.Infrastructure.Typings
 				Members = {GetMapCreatorFunction()}
 			};
 
-		private static RtFuncion GetMapCreatorFunction()
+		private static RtFunction GetMapCreatorFunction()
 		{
 			// Плохо. Но что делать?
 			var domainEventTypesMap = ExportableTypesContainer.Instance.Events
 				.Select(eventType => $"map.set('{eventType.Name}', {eventType.Name});")
 				.StringJoin("\r\n");
 
-			return new RtFuncion
+			return new RtFunction
 			{
 				Identifier = new RtIdentifier("create"),
 				IsStatic = true,
