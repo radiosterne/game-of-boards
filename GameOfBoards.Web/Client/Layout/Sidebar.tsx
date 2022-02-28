@@ -44,7 +44,7 @@ const SidebarContent = observer((props: Props) => {
 	return (
 		<div>
 			<Header>
-				<img src='/IDA_LOGO-06.png' style={{ maxHeight: '64px', padding: '5px', objectFit: 'contain' }} />
+				<img src='/logo-csbi.png' style={{ height: '64px', padding: '5px', objectFit: 'contain', maxWidth: '240px' }} />
 			</Header>
 			<Divider />
 			<List>

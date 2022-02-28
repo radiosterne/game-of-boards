@@ -46,6 +46,10 @@
 		<Content Include="Client\IDA_LOGO-06.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<None Remove="Client\logo-csbi.png" />
+		<Content Include="Client\logo-csbi.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 
