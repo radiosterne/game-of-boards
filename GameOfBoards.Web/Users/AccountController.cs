@@ -47,7 +47,7 @@ namespace GameOfBoards.Web.Users
 				return RedirectToAction(nameof(Login));
 			}
 			await HttpContext.SignIn(userId);
-			return RedirectToAction("Form", "Games", new { id = "game-3896807c-c108-477c-93cc-18e6fc2ce5b4" });
+			return RedirectToAction("Form", "Games", new { id = "game-d1ed0f44-7184-452c-9247-7b47f57e4ac9" });
 		}
 	}
 
