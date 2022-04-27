@@ -44,7 +44,7 @@ const SidebarContent = observer((props: Props) => {
 	return (
 		<div>
 			<Header>
-				<img src='/logo-csbi.png' style={{ height: '64px', padding: '5px', objectFit: 'contain', maxWidth: '240px' }} />
+				<img src='/razoom_logo.jpeg' style={{ height: '64px', padding: '5px', objectFit: 'contain', maxWidth: '240px' }} />
 			</Header>
 			<Divider />
 			<List>

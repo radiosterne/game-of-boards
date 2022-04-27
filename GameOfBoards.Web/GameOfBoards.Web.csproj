@@ -50,6 +50,10 @@
 		<Content Include="Client\logo-csbi.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<None Remove="Client\razoom_logo.jpeg" />
+		<Content Include="Client\razoom_logo.jpeg">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 
