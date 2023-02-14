@@ -1,1 +1,1 @@
-# docker run -d --name gob-app -v /var/gameofboards/dataprotection/ --restart=always --log-opt max-size=10m --network=host docker.blumenkraft.me/nand/gob-app:test7
+docker run -d --name gob-app --mount 'type=volume,src=ddataprotection,dst=/var/gameofboards/dataprotection/' --restart=always --log-opt max-size=10m --network=host docker.blumenkraft.me/nand/gob-app:test8
