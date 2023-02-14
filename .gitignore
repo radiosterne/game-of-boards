@@ -263,3 +263,5 @@ paket-files/
 /GameOfBoards.Web/Client/**/**/*.js
 !/GameOfBoards.Web/Client/serverShims.js
 !/GameOfBoards.Web/Client/.eslintrc.js
+/out
+/DataProtection

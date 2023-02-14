@@ -38,7 +38,7 @@ export class App extends React.Component<IUsersListAppSettings> {
 											style={{ marginLeft: '8px' }}
 											variant='outlined'
 											onClick={() => {
-												const url = `https://razoom.blumenkraft.me/account/shortLogin?id=${user.id}&salt=${encodeURIComponent(user.salt || '')}`;
+												const url = `https://csbi.blumenkraft.me/account/shortLogin?id=${user.id}&salt=${encodeURIComponent(user.salt || '')}`;
 												navigator.clipboard.writeText(url);
 											}}>
 												Ссылка на вход
